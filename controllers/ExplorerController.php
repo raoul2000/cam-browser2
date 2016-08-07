@@ -40,4 +40,28 @@ class ExplorerController extends \yii\web\Controller
       ]);
     }
 
+    public function actionDeleteFile($path)
+    {
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      sleep(1);
+      
+      $filepath = Yii::$app->params['folder'] . '/' . $path;
+      if( !file_exists($filepath)){
+        return [
+          'error' => TRUE,
+          'message' => 'file not found'
+        ];
+      } else if( FALSE ){ //! unlink($filepath)
+        return [
+          'error' => TRUE,
+          'message' => 'failed to delete file ' . $filepath
+        ];
+      } else {
+        return [
+          'error' => FALSE,
+          'message' => 'file deleted'
+        ];
+      }
+    }
+
 }

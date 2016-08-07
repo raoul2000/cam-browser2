@@ -21,7 +21,8 @@
           var btn = $(ev.target);
           console.log(btn.data('path'));
           if (confirm("Delete this file ? ")) {
-              $.getJSON('delete-single-file.php', {
+              $.getJSON('index.php', {
+                  'r': 'explorer/delete-file',
                   path: btn.data('path')
               }, function(data) {
                   if (data.error) {
@@ -46,7 +47,8 @@
           return function() {
 
               var defer = $.Deferred();
-              $.getJSON('delete-single-file.php', {
+              $.getJSON('index.php', {
+                      "r": "explorer/delete-file",
                       "path": path
                   }, function(data) {
                       if (data.error) {
