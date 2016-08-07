@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use Yii;
 use yii\console\Controller;
 use yii\helpers\FileHelper;
 
@@ -36,7 +37,15 @@ class FakeController extends Controller
       [
         'name' => "file3.jpg",
         'mtime' => "2015/12/01 22:54"
-      ]
+      ],
+      [
+        'name' => "file4.jpg",
+        'mtime' => "2016/08/01 22:54"
+      ],
+      [
+        'name' => "file4a.jpg",
+        'mtime' => "2016/08/01 22:55"
+      ],
     ];
     /**
      * This command echoes what you have entered as the message.
@@ -47,11 +56,11 @@ class FakeController extends Controller
         echo $message . "\n";
     }
 
-    public function actionImageFolder()
+    public function actionImageFolder ()
     {
         echo "creating fake folder\n";
 
-        $path = __DIR__ . '/../data-sample';
+        $path = Yii::getAlias('@runtime/sample-data');
         $refFilename = __DIR__ . "/img-example.jpg";
         $timezone = "Europe/Paris";
 
