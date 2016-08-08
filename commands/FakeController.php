@@ -7,6 +7,8 @@
 
 namespace app\commands;
 
+use Yii;
+
 use yii\console\Controller;
 use yii\helpers\FileHelper;
 
@@ -51,7 +53,7 @@ class FakeController extends Controller
     {
         echo "creating fake folder\n";
 
-        $path = __DIR__ . '/../data-sample';
+        $path = Yii::getAlias('@runtime/sample-data');
         $refFilename = __DIR__ . "/img-example.jpg";
         $timezone = "Europe/Paris";
 
