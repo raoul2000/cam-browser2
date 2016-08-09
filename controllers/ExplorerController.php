@@ -22,6 +22,35 @@ class ExplorerController extends \yii\web\Controller
       ]);
     }
 
+    public function actionBrowse($path="/")
+    {
+      $path = empty($path) ? '/' : $path;
+
+      $parts = explode('/',$path);
+      var_dump($parts);
+      
+      // TODO : fix this ! get parent path
+      //  if path = '/' parent = '/'
+      //  if path = '/a' parent = '/'
+      //  if path = '/a/b' parent = '/a'
+      //
+      if(count($parts) == 0) {
+        $parent = '/';
+      } else {
+        array_pop($parts);
+        $parent =  implode('/',$parts);
+      }
+      $fs = Yii::createObject([
+        'class'    => \app\components\Fs::className(),
+        'basePath' => Yii::getAlias('@app/tests/_work')
+      ]);
+      return $this->render('browse',[
+        'parent' => $parent,
+        'path' => $path,
+        'list' => $fs->ls($path)
+      ]);
+    }
+
     public function actionViewImage($date)
     {
       require_once('../components/select-by-day.php');
@@ -44,7 +73,7 @@ class ExplorerController extends \yii\web\Controller
     {
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       sleep(1);
-      
+
       $filepath = Yii::$app->params['folder'] . '/' . $path;
       if( !file_exists($filepath)){
         return [

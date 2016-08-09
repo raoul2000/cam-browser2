@@ -8,10 +8,6 @@ $config = [
     'bootstrap' => ['log'],
     'defaultRoute' => 'explorer/index',
     'components' => [
-        'fs' => [
-          'class' => 'creocoder\flysystem\LocalFilesystem',
-          'path' => '@webroot/files',
-        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'sc9OT8bZ4x6Q4P0lOm9xSA2ofNYfXyf2',

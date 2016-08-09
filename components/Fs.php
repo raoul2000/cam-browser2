@@ -14,10 +14,12 @@ class Fs extends Object
     public $prop2;
     private $_basePath;
 
-    public function __construct($basePath, $param2, $config = [])
+    public function __construct($config = [])
     {
-          // ... initialization before configuration is applied
-      $this->_basePath = $basePath;
+      if( isset($config['basePath'])) {
+        $this->_basePath = $config['basePath'];
+        unset($config['basePath']);
+      }
       parent::__construct($config);
     }
 
@@ -25,9 +27,9 @@ class Fs extends Object
     {
       parent::init();        // ... initialization after configuration is applied
       if( ! file_exists($this->_basePath)) {
-        throw new yii\base\InvalidConfigException("folder not found : " . $this->_basePath);
+        throw new \yii\base\InvalidConfigException("folder not found : " . $this->_basePath);
       } elseif ( ! is_dir( $this->_basePath) ) {
-        throw new yii\base\InvalidConfigException("specified base path is not a valid folder : " . $this->_basePath);
+        throw new \yii\base\InvalidConfigException("specified base path is not a valid folder : " . $this->_basePath);
       }
     }
 
@@ -36,15 +38,30 @@ class Fs extends Object
       return $this->_basePath;
     }
 
-    public function ls($folder = "")
+    public function ls($folder = "/")
     {
-      $dirname = $this->_basePath . 
-      $directory = new DirectoryIterator(__DIR__);
+      $result = [];
+      $dirname = $this->getBasePath() . $folder;  //DIRECTORY_SEPARATOR
+      $directory = new \DirectoryIterator($dirname);
       foreach ($directory as $fileinfo) {
-          if ($fileinfo->isFile()) {
-              echo $fileinfo->getExtension() . "\n";
-          }
+        if( $fileinfo->getBasename() == '.') {
+          continue;
+        }
+        if( $fileinfo->getBasename() == '..' && $folder == '/') {
+          continue;
+        }
+
+        $entry = new \stdClass;
+        $entry->extension = $fileinfo->getExtension();
+        $entry->type = $fileinfo->getType();  // file, link, dir
+        $entry->basename = $fileinfo->getBasename();
+        $entry->path = $fileinfo->getPath();
+        $entry->mtime = $fileinfo->getMTime();
+        $entry->size = $fileinfo->getSize();
+
+        $result[] = $entry;
       }
+      return $result;
     }
     /**
      * List all files matching the pattern and returns an index by last modification time.
