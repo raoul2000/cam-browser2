@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use  app\components\Fs;
 
 class ExplorerController extends \yii\web\Controller
 {
@@ -24,28 +25,12 @@ class ExplorerController extends \yii\web\Controller
 
     public function actionBrowse($path="/")
     {
-      $path = empty($path) ? '/' : $path;
-
-      $parts = explode('/',$path);
-      var_dump($parts);
-      
-      // TODO : fix this ! get parent path
-      //  if path = '/' parent = '/'
-      //  if path = '/a' parent = '/'
-      //  if path = '/a/b' parent = '/a'
-      //
-      if(count($parts) == 0) {
-        $parent = '/';
-      } else {
-        array_pop($parts);
-        $parent =  implode('/',$parts);
-      }
       $fs = Yii::createObject([
         'class'    => \app\components\Fs::className(),
         'basePath' => Yii::getAlias('@app/tests/_work')
       ]);
       return $this->render('browse',[
-        'parent' => $parent,
+        'parent' => Fs::dirname($path),
         'path' => $path,
         'list' => $fs->ls($path)
       ]);

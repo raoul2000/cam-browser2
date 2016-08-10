@@ -23,7 +23,6 @@
                 }
                 ?>
                   <a href="index.php?r=explorer/browse&path=<?= $paramPath ?>" class="list-group-item">
-                    <!--input class="chk-date" type="checkbox" name="name" value=""-->
                     <span class="day"> <?= $item->basename ?></span>
                   </a>
 

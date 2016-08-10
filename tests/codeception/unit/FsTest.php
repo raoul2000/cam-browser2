@@ -49,4 +49,15 @@ class FsTest extends \Codeception\TestCase\Test
       });
     }
 
+    public function testDirname()
+    {
+      expect('returns parent folder', Fs::dirname('/a/b/c'))->equals('/a/b');
+      expect('returns parent folder', Fs::dirname('/a/b/c/d/e/file.txt'))->equals('/a/b/c/d/e');
+      expect('returns parent folder', Fs::dirname('/a'))->equals('/');
+      expect('returns parent folder', Fs::dirname('/'))->equals('/');
+      expect('returns parent folder', Fs::dirname('/  '))->equals('/');
+      expect('returns parent folder', Fs::dirname('az '))->equals('/');
+      expect('returns parent folder', Fs::dirname('//az '))->equals('/');
+    }
+
 }

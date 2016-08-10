@@ -10,8 +10,6 @@ use \yii\base\Object;
  */
 class Fs extends Object
 {
-    public $prop1;
-    public $prop2;
     private $_basePath;
 
     public function __construct($config = [])
@@ -33,11 +31,46 @@ class Fs extends Object
       }
     }
 
+    /**
+     * Returns a parent directory path.
+     * The path separator is '/'.
+     *
+     * @param  string $file a path
+     * @return string       the parent path of $path
+     */
+    static public function dirname($file)
+    {
+      $file = trim($file);
+      if( $file === '/' || empty($file)){
+        return '/';
+      }
+
+      $tokens = array_filter(explode('/',$file),function($token){
+        return ! empty($token);
+      });
+      if(count($tokens) == 1) {
+        return '/';
+      } else {
+        array_pop($tokens);
+        return '/' . implode('/',$tokens);
+      }
+    }
+
+    /**
+     * Returns the local path used as root folder for this Fs instance.
+     * @return string absolute local path
+     */
     public function getBasePath()
     {
       return $this->_basePath;
     }
 
+    /**
+     * Returns a list of files and folder inside a path.
+     *
+     * @param  string $folder the folder to list
+     * @return array         list of object representing files and folders
+     */
     public function ls($folder = "/")
     {
       $result = [];
