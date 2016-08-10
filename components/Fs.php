@@ -11,12 +11,17 @@ use \yii\base\Object;
 class Fs extends Object
 {
     private $_basePath;
+    private $_baseUrl;
 
     public function __construct($config = [])
     {
       if( isset($config['basePath'])) {
-        $this->_basePath = $config['basePath'];
+        $this->_basePath = trim($config['basePath']);
         unset($config['basePath']);
+      }
+      if( isset($config['baseUrl'])) {
+        $this->_baseUrl = trim($config['baseUrl']);
+        unset($config['baseUrl']);
       }
       parent::__construct($config);
     }
@@ -34,6 +39,9 @@ class Fs extends Object
     /**
      * Returns a parent directory path.
      * The path separator is '/'.
+     * Example :
+     * dirname('/folder/file.txt') returns '/folder'
+     * dirname('/file.txt') returns '/'
      *
      * @param  string $file a path
      * @return string       the parent path of $path
@@ -65,25 +73,38 @@ class Fs extends Object
       return $this->_basePath;
     }
 
+    public function getBaseUrl($path='/')
+    {
+      return $this->_baseUrl;
+    }
+
     /**
      * Returns a list of files and folder inside a path.
      *
      * @param  string $folder the folder to list
      * @return array         list of object representing files and folders
      */
-    public function ls($folder = "/")
+    public function ls($folder = "/", $filterExtension = null)
     {
       $result = [];
       $dirname = $this->getBasePath() . $folder;  //DIRECTORY_SEPARATOR
       $directory = new \DirectoryIterator($dirname);
       foreach ($directory as $fileinfo) {
+        // never returns the '.'
         if( $fileinfo->getBasename() == '.') {
           continue;
         }
+        // never include '..' when dealing with the root folder
         if( $fileinfo->getBasename() == '..' && $folder == '/') {
           continue;
         }
-
+        // apply extension based filter
+        if ( $fileinfo->getType() == 'file'
+          && is_array($filterExtension)
+          && ! in_array($fileinfo->getExtension(), $filterExtension) )
+        {
+          continue;
+        }
         $entry = new \stdClass;
         $entry->extension = $fileinfo->getExtension();
         $entry->type = $fileinfo->getType();  // file, link, dir

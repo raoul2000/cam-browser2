@@ -28,6 +28,14 @@ class FakeController extends Controller
         'mtime' => "2016/01/28 17:23"
       ],
       [
+        'name' => "folder/file1a.jpg",
+        'mtime' => "2016/01/28 17:23"
+      ],
+      [
+        'name' => "folder/sub-folder/file3.jpg",
+        'mtime' => "2016/01/28 17:23"
+      ],
+      [
         'name' => "file2.jpg",
         'mtime' => "2016/01/28 12:30"
       ],

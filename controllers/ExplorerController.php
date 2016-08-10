@@ -7,6 +7,15 @@ use  app\components\Fs;
 
 class ExplorerController extends \yii\web\Controller
 {
+    public function actions()
+    {
+      return [
+        'rm' => [
+          'class' => 'app\actions\RmAction'
+        ]
+      ];
+    }
+
     public function actionIndex()
     {
       require_once('../components/browse-folder.php');
@@ -27,12 +36,14 @@ class ExplorerController extends \yii\web\Controller
     {
       $fs = Yii::createObject([
         'class'    => \app\components\Fs::className(),
-        'basePath' => Yii::getAlias('@app/tests/_work')
+        'basePath' => Yii::getAlias('@runtime/sample-data'),
+        'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data'
       ]);
-      return $this->render('browse',[
+      return $this->render('browse-thumb',[
         'parent' => Fs::dirname($path),
         'path' => $path,
-        'list' => $fs->ls($path)
+        'baseUrl' => $fs->getBaseUrl($path),
+        'list' => $fs->ls($path, ['jpg','txt'])
       ]);
     }
 

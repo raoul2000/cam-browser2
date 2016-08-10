@@ -14,12 +14,10 @@
               foreach ($list as  $item) {
                 if( $item->basename == '..') {
                   $paramPath = $parent;
+                } elseif( $path == '/') {
+                  $paramPath = '/' . $item->basename;
                 } else {
-                  if( $path != '/') {
-                    $paramPath = $path . '/' . $item->basename;
-                  } else {
-                    $paramPath = '/' . $item->basename;
-                  }
+                  $paramPath = $path . '/' . $item->basename;
                 }
                 ?>
                   <a href="index.php?r=explorer/browse&path=<?= $paramPath ?>" class="list-group-item">
