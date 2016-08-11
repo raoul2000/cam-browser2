@@ -16,7 +16,8 @@ class Fs extends Object
     public function __construct($config = [])
     {
       if( isset($config['basePath'])) {
-        $this->_basePath = trim($config['basePath']);
+        $this->_basePath = trim($config['basePath']); // not normalized because
+        // on windows, add '/' before drive letter
         unset($config['basePath']);
       }
       if( isset($config['baseUrl'])) {
@@ -48,11 +49,11 @@ class Fs extends Object
      */
     static public function dirname($file)
     {
-      $file = trim($file);
-      if( $file === '/' || empty($file)){
-        return '/';
+      $file = Fs::normalizePath($file);
+      if( $file === '/' ){
+        return '/'; // root folder has no parent
       }
-
+      // split path on '/' and ignore empty tokens
       $tokens = array_filter(explode('/',$file),function($token){
         return ! empty($token);
       });
@@ -78,6 +79,19 @@ class Fs extends Object
       return $this->_baseUrl;
     }
 
+    public static function normalizePath($path)
+    {
+      $path = trim($path);
+      if( empty($path) || $path == '/') {
+        return '/';
+      } else {
+        $norm = \yii\helpers\FileHelper::normalizePath($path,'/');
+        if( $norm[0] != '/') {
+          $norm = '/' . $norm;
+        }
+        return $norm;
+      }
+    }
     /**
      * Returns a list of files and folder inside a path.
      *

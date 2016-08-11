@@ -60,4 +60,16 @@ class FsTest extends \Codeception\TestCase\Test
       expect('returns parent folder', Fs::dirname('//az '))->equals('/');
     }
 
+
+    public function testNormalizePath()
+    {
+      expect('returns normalized folder', Fs::normalizePath('/a/b/c'))->equals('/a/b/c');
+      expect('returns normalized folder', Fs::normalizePath('/a/b/c/d/e/file.txt'))->equals('/a/b/c/d/e/file.txt');
+      expect('returns normalized folder', Fs::normalizePath('/'))->equals('/');
+      expect('returns normalized folder', Fs::normalizePath(' /a '))->equals('/a');
+      expect('returns normalized folder', Fs::normalizePath(''))->equals('/');
+      expect('returns normalized folder', Fs::normalizePath('az '))->equals('/az');
+      expect('returns normalized folder', Fs::normalizePath('//az '))->equals('/az');
+    }
+
 }
