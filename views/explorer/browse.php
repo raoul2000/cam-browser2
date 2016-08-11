@@ -21,6 +21,8 @@
                 }
                 ?>
                   <a href="index.php?r=explorer/browse&path=<?= $paramPath ?>" class="list-group-item">
+                    <img src="<?= \app\components\MimeType::getIconUrl($item->basename) ?>" alt="" />
+                    <span><?= \app\components\MimeType::getIconUrl($item->basename) ?></span>
                     <span class="day"> <?= $item->basename ?></span>
                   </a>
 

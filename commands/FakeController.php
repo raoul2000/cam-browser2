@@ -32,6 +32,18 @@ class FakeController extends Controller
         'mtime' => "2016/01/28 17:23"
       ],
       [
+        'name' => "folder/hello-world.txt",
+        'mtime' => "2016/01/28 17:23"
+      ],
+      [
+        'name' => "folder/reference.xml",
+        'mtime' => "2016/01/28 17:23"
+      ],
+      [
+        'name' => "folder/README.md",
+        'mtime' => "2016/01/28 17:23"
+      ],
+      [
         'name' => "folder/sub-folder/file3.jpg",
         'mtime' => "2016/01/28 17:23"
       ],

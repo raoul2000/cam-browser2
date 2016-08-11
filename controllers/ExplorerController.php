@@ -39,11 +39,11 @@ class ExplorerController extends \yii\web\Controller
         'basePath' => Yii::getAlias('@runtime/sample-data'),
         'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data'
       ]);
-      return $this->render('browse-thumb',[
+      return $this->render('browse',[
         'parent' => Fs::dirname($path),
         'path' => $path,
         'baseUrl' => $fs->getBaseUrl($path),
-        'list' => $fs->ls($path, ['jpg','txt'])
+        'list' => $fs->ls($path) //['jpg','txt']
       ]);
     }
 
