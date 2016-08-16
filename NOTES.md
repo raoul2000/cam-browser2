@@ -10,6 +10,7 @@ From the *@app* folder.
 
 ## create sample image folder
 
+Create a tree folder structure for test purposes :
 ```
 yii fake/image-folder
 ```
