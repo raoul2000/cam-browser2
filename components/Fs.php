@@ -13,11 +13,23 @@ class Fs extends Object
     private $_basePath;
     private $_baseUrl;
 
+    /**
+     * Create an Fs instance.
+     * The config array must contain following configuration values :
+     * 
+     * 'basePath' : absolute local file system path or Yii2 alias
+     * 'baseUrl' : absolute HTTP URL
+     *
+     * @param array $config configuration values
+     */
     public function __construct($config = [])
     {
       if( isset($config['basePath'])) {
         $this->_basePath = trim($config['basePath']); // not normalized because
         // on windows, add '/' before drive letter
+        if (0 === strpos($this->_basePath, '@')) {
+           $this->_basePath = Yii::getAlias($this->_basePath);
+        }
         unset($config['basePath']);
       }
       if( isset($config['baseUrl'])) {
@@ -130,6 +142,15 @@ class Fs extends Object
         $result[] = $entry;
       }
       return $result;
+    }
+
+    public function deleteFile($filePath)
+    {
+
+    }
+    public function deleteFolder($folderPath)
+    {
+
     }
     /**
      * List all files matching the pattern and returns an index by last modification time.

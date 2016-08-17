@@ -34,16 +34,11 @@ class ExplorerController extends \yii\web\Controller
 
     public function actionBrowse($path="/")
     {
-      $fs = Yii::createObject([
-        'class'    => \app\components\Fs::className(),
-        'basePath' => Yii::getAlias('@runtime/sample-data'),
-        'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data'
-      ]);
       return $this->render('browse',[
         'parent' => Fs::dirname($path),
         'path' => $path,
-        'baseUrl' => $fs->getBaseUrl($path),
-        'list' => $fs->ls($path) //['jpg','txt']
+        'baseUrl' => Yii::$app->fs->getBaseUrl($path),
+        'list' => Yii::$app->fs->ls($path) //['jpg','txt']
       ]);
     }
 

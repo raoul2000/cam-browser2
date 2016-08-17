@@ -8,6 +8,11 @@ $config = [
     'bootstrap' => ['log'],
     'defaultRoute' => 'explorer/index',
     'components' => [
+        'fs' => [
+            'class'    => '\app\components\Fs',
+            'basePath' => '@runtime/sample-data',
+            'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data'
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'sc9OT8bZ4x6Q4P0lOm9xSA2ofNYfXyf2',
