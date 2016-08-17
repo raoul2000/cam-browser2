@@ -16,7 +16,7 @@ class Fs extends Object
     /**
      * Create an Fs instance.
      * The config array must contain following configuration values :
-     * 
+     *
      * 'basePath' : absolute local file system path or Yii2 alias
      * 'baseUrl' : absolute HTTP URL
      *
@@ -98,7 +98,7 @@ class Fs extends Object
         return '/';
       } else {
         $norm = \yii\helpers\FileHelper::normalizePath($path,'/');
-        if( $norm[0] != '/') {
+        if( strpos($norm,'/') !== 0 ) {
           $norm = '/' . $norm;
         }
         return $norm;
@@ -120,22 +120,29 @@ class Fs extends Object
         if( $fileinfo->getBasename() == '.') {
           continue;
         }
-        // never include '..' when dealing with the root folder
+        // never include '..' when dealing with the root folder because we can't
+        // reach the parent folder anyway
         if( $fileinfo->getBasename() == '..' && $folder == '/') {
           continue;
         }
-        // apply extension based filter
+        // apply extension based filter on file items
         if ( $fileinfo->getType() == 'file'
           && is_array($filterExtension)
           && ! in_array($fileinfo->getExtension(), $filterExtension) )
         {
           continue;
         }
+        // only provide a pseudo absolute path which is in fact relative to the
+        // base path.
+        $relativePath = str_replace( $this->getBasePath(),'',$fileinfo->getPath());
+        if(strlen($relativePath)===0) {
+          $relativePath = '/';
+        }
         $entry = new \stdClass;
         $entry->extension = $fileinfo->getExtension();
         $entry->type = $fileinfo->getType();  // file, link, dir
         $entry->basename = $fileinfo->getBasename();
-        $entry->path = $fileinfo->getPath();
+        $entry->path = $relativePath;
         $entry->mtime = $fileinfo->getMTime();
         $entry->size = $fileinfo->getSize();
 

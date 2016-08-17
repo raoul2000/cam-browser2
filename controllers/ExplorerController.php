@@ -34,6 +34,7 @@ class ExplorerController extends \yii\web\Controller
 
     public function actionBrowse($path="/")
     {
+      $path = Fs::normalizePath($path);
       return $this->render('browse',[
         'parent' => Fs::dirname($path),
         'path' => $path,

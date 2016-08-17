@@ -12,18 +12,26 @@
               echo "<p>no file found</p>";
             } else {
               foreach ($list as  $item) {
-                if( $item->basename == '..') {
+                if( $item->type === 'file') {
+                  $icon = 'glyphicon-file';
+                }
+                elseif( $item->type === 'dir') {
+                  $icon = 'glyphicon-folder-close';
+                }
+                if( $item->basename == '..' ) {
                   $paramPath = $parent;
-                } elseif( $path == '/') {
-                  $paramPath = '/' . $item->basename;
                 } else {
-                  $paramPath = $path . '/' . $item->basename;
+                  $paramPath = $item->path != '/'
+                    ? $item->path . '/' . $item->basename
+                    : $item->path . $item->basename;
                 }
                 ?>
                   <a href="index.php?r=explorer/browse&path=<?= $paramPath ?>" class="list-group-item">
-                    <img src="<?= \app\components\MimeType::getIconUrl($item->basename) ?>" alt="" />
-                    <span><?= \app\components\MimeType::getIconUrl($item->basename) ?></span>
-                    <span class="day"> <?= $item->basename ?></span>
+                    <?= var_dump($item)  ?>
+                    <span class="day">
+                      <span class="glyphicon <?= $icon ?>" aria-hidden="true"></span>
+                       <?= $item->basename ?>
+                     </span>
                   </a>
 
                 <?php
