@@ -7,6 +7,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
 use yii\helpers\FileHelper;
 use Codeception\Specify;
+use tests\codeception\unit\TestHelper;
 
 class ExplorerTest extends \Codeception\TestCase\Test
 {
@@ -40,26 +41,13 @@ class ExplorerTest extends \Codeception\TestCase\Test
 
     protected function _before()
     {
-      $path = Yii::getAlias('@tests/_work');
-
-      @mkdir($path, 0755);
-      foreach($this->sampleFiles as $file) {
-        $destFile = $path . '/' . $file['name'];
-        if( ! file_exists(dirname($destFile))){
-          FileHelper::createDirectory(
-            dirname($destFile)
-          );
-        }
-        touch( $destFile, strtotime($file['mtime']));
-      }
-
-      $this->fs = new Filesystem(new Local($path));
+      TestHelper::createFolders($this->sampleFiles);
+      $this->fs = new Filesystem(new Local(TestHelper::getWorkFolderPath()));
     }
 
     protected function _after()
     {
-      $path = Yii::getAlias('@tests/_work');
-      //\yii\helpers\FileHelper::removeDirectory($path);
+      TestHelper::deleteFolders();
     }
 
     // tests

@@ -16,7 +16,8 @@ return [
       'basePath' => '@runtime/sample-data',
       'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',
       'mount' => [
-          'mount1' => [
+          [
+            'name' => 'mount1',
             'mount-point' => '/',
             'fstype' => 'local',
             'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',  // optionnal
@@ -35,7 +36,8 @@ return [
               ]
             ]
           ],
-          'mount2' => [
+          [
+            'name' => 'mount2',
             'mount-point' => '/folder',
             'fstype' => 'ftp',
             'baseUrl'  => 'http://hostname/folder1',  // optionnal
@@ -43,7 +45,7 @@ return [
               'host' => 'ftp.example.com',
               'username' => 'username',
               'password' => 'password',
-          
+
               /** optional config settings */
               'port' => 21,
               'root' => '/path/to/root',
@@ -51,7 +53,6 @@ return [
               'ssl' => true,
               'timeout' => 30,
             ]
-
           ]
       ]
     ]

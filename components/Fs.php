@@ -151,14 +151,6 @@ class Fs extends Object
       return $result;
     }
 
-    public function deleteFile($filePath)
-    {
-
-    }
-    public function deleteFolder($folderPath)
-    {
-
-    }
     /**
      * List all files matching the pattern and returns an index by last modification time.
      * Array index are the day of file last modification date, and the value is the count of

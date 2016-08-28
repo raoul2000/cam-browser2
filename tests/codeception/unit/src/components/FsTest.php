@@ -1,10 +1,11 @@
 <?php
 
-namespace tests\codeception\unit;
+namespace tests\codeception\unit\src\components;
 
 use Yii;
 use Codeception\Specify;
 use app\components\Fs;
+use tests\codeception\unit\TestHelper;
 
 class FsTest extends \Codeception\TestCase\Test
 {
@@ -12,10 +13,30 @@ class FsTest extends \Codeception\TestCase\Test
 
     protected function _before()
     {
+      TestHelper::createFolders( [
+        [
+          'name' => "folder/file1.jpg",
+          'mtime' => "2016/01/28 17:23"
+        ],
+        [
+          'name' => "file2.jpg",
+          'mtime' => "2016/01/28 12:30"
+        ],
+        [
+          'name' => "file2a.jpg",
+          'mtime' => "2016/01/28 21:30"
+        ],
+        [
+          'name' => "file3.jpg",
+          'mtime' => "2015/12/01 22:54"
+        ]
+      ]
+    );
     }
 
     protected function _after()
     {
+      TestHelper::deleteFolders();
     }
 
     // tests
@@ -41,7 +62,7 @@ class FsTest extends \Codeception\TestCase\Test
       $this->specify('list folder content', function () {
         $fs = Yii::createObject([
           'class'    => Fs::className(),
-          'basePath' => Yii::getAlias('@tests/_work')
+          'basePath' => TestHelper::getWorkFolderPath()
         ]);
 
         $ls = $fs->ls();
