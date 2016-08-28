@@ -62,6 +62,8 @@ class TestHelper
   static public function deleteFolders()
   {
     $path = self::getWorkFolderPath();
-    \yii\helpers\FileHelper::removeDirectory($path);
+    if(is_dir($path)) {
+      \yii\helpers\FileHelper::removeDirectory($path);
+    }
   }
 }

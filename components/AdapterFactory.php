@@ -38,8 +38,8 @@ class AdapterFactory
           ]
         ];
         $arg = array_merge($defaults, $options);
-        list($rootPath, $writeFlags, $linkHandling, $permissions) = $arg;
-        $adaptater = new \League\Flysystem\Adapter\Local($rootPath, $writeFlags, $linkHandling, $permissions);
+        extract($arg);
+        $adaptater = new \League\Flysystem\Adapter\Local(Yii::getAlias($rootPath), $writeFlags, $linkHandling, $permissions);
         break;
 
       case 'ftp':
