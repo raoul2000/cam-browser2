@@ -13,8 +13,13 @@ return [
     // timezone support in php : http://php.net/manual/fr/timezones.php
     'timezone' => "Europe/Paris",
     'fs' => [
-      'basePath' => '@runtime/sample-data',
-      'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',
+      'root' => [
+        'fstype'   => 'local',
+        'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',  // optionnal
+        'options'  => [  // see http://flysystem.thephpleague.com/adapter/local/
+          'rootPath' => '@runtime/sample-data'
+        ]
+      ],
       'mount' => [
           [
             'name' => 'mount1',

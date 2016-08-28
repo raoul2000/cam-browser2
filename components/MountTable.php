@@ -10,15 +10,23 @@ use \yii\base\Object;
  */
 class MountTable extends Object
 {
-  private $_mount = [];
+  private $mountedFs = [];
 
   public function __construct($config = [])
   {
-    if( isset($config['mount'])&& is_array($config['mount']) ) {
-      $this->_mount = $config['mount'];
-      unset($config['mount']);
+    foreach ($config as $mountCfg) {
+      if( ! isset($mountCfg['name'])) {
+        throw new \yii\base\InvalidConfigException("mount name is missing");
+      }
+      $name = $mountCfg['name'];
+      // TODO : a mounted FS is identified by its name and mount point
+      if( ! isset($this->mountedFs[$name])) {
+        throw new \yii\base\InvalidConfigException("duplicate mounted fs name : $name");
+      }
+      unset($mountCfg['name']);
+      $this->mountedFs[$name] = new MountedFs($name, $mountCfg);
     }
-    parent::__construct($config);
+    parent::__construct();
   }
 
   public function init()
@@ -27,12 +35,22 @@ class MountTable extends Object
     // validate
   }
 
+  public function findByMountPoint($mountPoint)
+  {
+    $result = [];
+    foreach ($this->mountedFs as $mfs) {
+      if ($mfs->getMountPoint() == $mountPoint) {
+        $result[] = $mfs;
+      }
+    }
+    return $result;
+  }
+  
   public function find($name, $mountPoint)
   {
-    foreach ($this->_mount as $item) {
-      if( $item['name'] == $name && $item['mount-point'] == $mountPoint) {
-        // we have a winner
-        return $item;
+    foreach ($this->mountedFs as $mfs) {
+      if ($mfs->getName() == $name && $mfs->getMountPoint() == $mountPoint) {
+        return $mfs;
       }
     }
     return null;
