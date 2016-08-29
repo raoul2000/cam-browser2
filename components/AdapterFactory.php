@@ -8,11 +8,20 @@ use \yii\base\InvalidConfigException;
 use \League\Flysystem\Adapter\Local;
 
 /**
- *
+ * Create flysystem adapters
  */
 class AdapterFactory
 {
 
+  /**
+   * Creates and return a fly system Adapter based on the type and options passed as argument
+   *
+   * @param  string $type    the type of flysystem adapter (e.g. 'local', 'ftp', etc.)
+   * @param  array $options  adapter initialization settings
+   * @return \League\Flysystem\Adapter | null      the adpater instance or NULL if the adapter could not be created
+   * @throws Exception
+   *
+   */
   public function create($type, $options)
   {
     $adaptater = null;
