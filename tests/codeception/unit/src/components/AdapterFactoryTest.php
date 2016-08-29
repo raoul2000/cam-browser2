@@ -72,8 +72,6 @@ class AdapterFactoryTest extends \Codeception\TestCase\Test
   }
   /**
    * create local adapter test
-   *
-   * @return [type] [description]
    */
   public function testCreateLocal()
   {

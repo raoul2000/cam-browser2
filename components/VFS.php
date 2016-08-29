@@ -10,13 +10,13 @@ use \yii\base\Object;
  */
 class VFS extends Object
 {
-    private $root;
+    private $mfsRoot;
     private $mountTable;
 
     public function __construct($config = [])
     {
       if( isset($config['root']) && is_array($config['root'])) {
-        $this->root = new MountedFs('root',$config['root']);
+        $this->mfsRoot = new MountedFs('root',$config['root']);
         unset($config['root']);
       }
 
@@ -29,15 +29,18 @@ class VFS extends Object
 
     public function init()
     {
-      parent::init();        // ... initialization after configuration is applied
-      if( !isset($this->root)) {
-        throw new \yii\base\InvalidConfigException("root filesystem configuration is missing ");
+      parent::init();
+      if( !isset($this->mfsRoot)) {
+        throw new \yii\base\InvalidConfigException("root filesystem configuration is missing");
+      }
+      if( isset($this->mountTable) && $this->mountTable->findByMountPoint($this->mfsRoot->getMountPoint() ) != null) {
+        throw new \yii\base\InvalidConfigException("root filesystem duplicate declaration");
       }
     }
 
-    public function getRoot()
+    public function getRootMountedFs()
     {
-      return $this->root;
+      return $this->mfsRoot;
     }
 
     public function getMountTable()
@@ -45,6 +48,6 @@ class VFS extends Object
       return $this->mountTable;
     }
 
-    
+
 
   }

@@ -14,7 +14,7 @@ return [
     'timezone' => "Europe/Paris",
     'fs' => [
       'root' => [
-        'fstype'   => 'local',
+        'type'   => 'local',
         'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',  // optionnal
         'options'  => [  // see http://flysystem.thephpleague.com/adapter/local/
           'rootPath' => '@runtime/sample-data'
@@ -24,7 +24,7 @@ return [
           [
             'name' => 'mount1',
             'mount-point' => '/',
-            'fstype' => 'local',
+            'type' => 'local',
             'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',  // optionnal
             'options' => [  // see http://flysystem.thephpleague.com/adapter/local/
               'rootPath' => '/a/b/c',
@@ -44,7 +44,7 @@ return [
           [
             'name' => 'mount2',
             'mount-point' => '/folder',
-            'fstype' => 'ftp',
+            'type' => 'ftp',
             'baseUrl'  => 'http://hostname/folder1',  // optionnal
             'options' => [
               'host' => 'ftp.example.com',

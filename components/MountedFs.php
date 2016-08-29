@@ -20,8 +20,21 @@ class MountedFs extends Object
    * @var League\Flysystem\Filesystem
    */
   private $fileSystem;
-  private $options = [];
+  private $options;
 
+  /**
+   *
+   * config :  [
+   *  'type' => "local",
+   *  'baseUrl' => 'http:// ...',
+   *  'mount-point' => '/some/folder',
+   *  'options' => [
+   *      // adapter options
+   *  ]
+   * ]
+   * @param string $name   name of the MountedFs
+   * @param array $config set of configuration parameters
+   */
   public function __construct($name, $config)
   {
     $this->name = $name;
@@ -38,7 +51,7 @@ class MountedFs extends Object
       $this->mountPoint = $config['mount-point'];
       unset($config['mount-point']);
     }
-    if( isset($config['options']) && is_array($config['options']) ) {
+    if( isset($config['options']) ) {
       $this->options = $config['options'];
       unset($config['options']);
     }
@@ -48,7 +61,22 @@ class MountedFs extends Object
   public function init()
   {
     parent::init();        // ... initialization after configuration is applied
-    // validate
+
+    if( ! isset($this->name)) {
+      throw new \yii\base\InvalidConfigException("the 'name' property is missing");
+    }
+    if( ! isset($this->type)) {
+      throw new \yii\base\InvalidConfigException("the 'type' property is missing");
+    }
+    if( ! isset($this->mountPoint)) {
+      throw new \yii\base\InvalidConfigException("the 'mount-point' property is missing");
+    }
+
+    if( ! isset($this->options)) {
+      throw new \yii\base\InvalidConfigException("the 'options' property is missing");
+    } elseif ( ! is_array($this->options)) {
+      throw new \yii\base\InvalidConfigException("the 'options' property must be an array");
+    }
   }
 
   public function getName()
