@@ -17,6 +17,15 @@ class VFS extends Object
   private $mfsRoot;
   private $mountTable;
 
+  /**
+   * Constructor for the VFS class.
+   * The configuration array must include at least the 'root' entry to
+   * configure the root file system (associated with '/').
+   * The optional 'mount' entry is also available to describe all the mounted
+   * file system that should be available.
+   *
+   * @param array $config configuration array
+   */
   public function __construct($config = [])
   {
     if( isset($config['root']) && is_array($config['root'])) {
@@ -31,6 +40,13 @@ class VFS extends Object
     parent::__construct($config);
   }
 
+  /**
+   * Initialize and validate the VFS instance.
+   * Validation rules :
+   * - a 'root' file system must be configured
+   * - if a mount table is configured it should not include a mount point equal
+   * to the root mounted fs.
+   */
   public function init()
   {
     parent::init();
@@ -51,7 +67,7 @@ class VFS extends Object
   {
     return $this->mountTable;
   }
-  
+
   /**
    * Returns a list of files and folder inside a path.
    *
