@@ -51,5 +51,15 @@ class VFS extends Object
   {
     return $this->mountTable;
   }
+  
+  /**
+   * Returns a list of files and folder inside a path.
+   *
+   * @param  string $folder the folder to list
+   * @return array         list of object representing files and folders
+   */
+  public function ls($folder = "/", $filterExtension = null)
+  {
 
+  }
 }
