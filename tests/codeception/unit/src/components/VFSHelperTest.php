@@ -23,13 +23,16 @@ class VFSHelperTest extends \Codeception\TestCase\Test
 
    public function testNormalizePath()
    {
-     expect('returns normalized folder', VFSHelper::normalizePath('/a/b/c'))->equals('/a/b/c');
-     expect('returns normalized folder', VFSHelper::normalizePath('/a/b/c/d/e/file.txt'))->equals('/a/b/c/d/e/file.txt');
-     expect('returns normalized folder', VFSHelper::normalizePath('/'))->equals('/');
-     expect('returns normalized folder', VFSHelper::normalizePath(' /a '))->equals('/a');
-     expect('returns normalized folder', VFSHelper::normalizePath(''))->equals('/');
-     expect('returns normalized folder', VFSHelper::normalizePath('az '))->equals('/az');
-     expect('returns normalized folder', VFSHelper::normalizePath('//az '))->equals('/az');
+     expect('do not modify folder path', VFSHelper::normalizePath('/a/b/c'))->equals('/a/b/c');
+     expect('do not modify folder path', VFSHelper::normalizePath(' /a '))->equals('/a');
+     expect('do not modify file path', VFSHelper::normalizePath('/a/b/c/d/e/file.txt'))->equals('/a/b/c/d/e/file.txt');
+     expect('resolve .. folders', VFSHelper::normalizePath('/a/b/../d/../file.txt'))->equals('/a/file.txt');
+     expect('fails to leave root folder', VFSHelper::normalizePath('/a/../../file.txt'))->equals('/file.txt');
+     expect('root folder is not modified', VFSHelper::normalizePath('/'))->equals('/');
+     expect('empty string path is turned into root path', VFSHelper::normalizePath(''))->equals('/');
+     expect('folder name is trimmed', VFSHelper::normalizePath(' az '))->equals('/az');
+     expect('double slah are removed', VFSHelper::normalizePath('//az '))->equals('/az');
+     expect('double slah are removed', VFSHelper::normalizePath('/a/b//c/file.txt '))->equals('/a/b/c/file.txt');
    }
 
 }

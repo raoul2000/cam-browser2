@@ -83,13 +83,5 @@ class VFSTest extends \Codeception\TestCase\Test
        ]
     ]);
   }
-  public function testPathParser()
-  {
-    // TODO : wip
-    $path = '/folderA/folderB/folderC/file.txt';
-    $parts = explode('/',$path);
-    for ($i=count($parts); $i <= -1; $i--) {
-      # code...
-    }
-  }
+
 }

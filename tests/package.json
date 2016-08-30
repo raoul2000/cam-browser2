@@ -1,0 +1,15 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "This directory contains various tests for the basic application.",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node run-ftp-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ftpd": "^0.2.15"
+  }
+}
