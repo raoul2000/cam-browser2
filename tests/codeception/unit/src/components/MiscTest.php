@@ -14,11 +14,11 @@ class MiscTest extends \Codeception\TestCase\Test
   {
     // TODO : wip
     // /a/b/c/d => [ '', 'a', 'b', 'c', 'd']
-    //  - i = 4   name = d  mount path = /a/b/c  folder =           folder '.' linked to mounted Fs 'd' under '/a/b/c'
-    //  - i = 2   name = c  mount path = /a/b    folder = d         folder d linked to mounted fs 'c' under '/a/b'
-    //  - i = 3   name = b  mount path = /a      folder = c/d       folder c/d linked to mounted fs 'b' under '/a'
-    //  - i = 1   name = a  mount path =         folder = b/c/d     folder b/c/d linked to the mounted FS 'a' under '/'
-    //  - i = 0   name =    mount path =         folder = a/b/c/d   folder a/b/c/d linked to the root Fs
+    //  - i = 4   name = d  mount point = /a/b/c  folder =           folder '.' linked to mounted Fs 'd' under '/a/b/c'
+    //  - i = 2   name = c  mount point = /a/b    folder = d         folder d linked to mounted fs 'c' under '/a/b'
+    //  - i = 3   name = b  mount point = /a      folder = c/d       folder c/d linked to mounted fs 'b' under '/a'
+    //  - i = 1   name = a  mount point =         folder = b/c/d     folder b/c/d linked to the mounted FS 'a' under '/'
+    //  - i = 0   name =    mount point =         folder = a/b/c/d   folder a/b/c/d linked to the root Fs
     //
 
     $path = '/folderA/folderB /folderC/FolderD';
@@ -30,12 +30,12 @@ class MiscTest extends \Codeception\TestCase\Test
       $name = $parts[$i];
 
       // mount path
-      $mountPath = implode('/',array_slice($parts,0,$i));
+      $mountPoint = implode('/',array_slice($parts,0,$i));
       /*
-      if($mountPath == '') {
-        $mountPath = '/';
+      if($mountPoint == '') {
+        $mountPoint = '/';
       }*/
-      codecept_debug("mountPath = ". $mountPath);
+      codecept_debug("mountPath = ". $mountPoint);
 
       // folder
       $folder = implode('/', array_slice($parts,$i+1));

@@ -29,7 +29,7 @@ class VFS extends Object
   public function __construct($config = [])
   {
     if( isset($config['root']) && is_array($config['root'])) {
-      $this->mfsRoot = new MountedFs('root',$config['root']);
+      $this->mfsRoot = new MountedFs('/',$config['root']);
       unset($config['root']);
     }
 
@@ -57,17 +57,53 @@ class VFS extends Object
       throw new \yii\base\InvalidConfigException("root filesystem duplicate declaration");
     }
   }
-
+  /**
+   * Returns the MountedFs instance configured as root of this VFS
+   * @return MountedFs The MountedFs instance for the root
+   */
   public function getRootMountedFs()
   {
     return $this->mfsRoot;
   }
 
+  /**
+   * Returns the configured mount fs table.
+   * @return MountTable|null the configured MountTable instance or NULL if none
+   * has been configured.
+   */
   public function getMountTable()
   {
     return $this->mountTable;
   }
 
+  /**
+   * Being given a path, this method returns the corresponding mounted FS
+   * instance (as configured) and the path to apply to it.
+   *
+   * @param  string $path the path to search for (e.g. /a/b/c/d)
+   * @return array       at index 0 the MountedFs instance, at index 1 the path to
+   * apply to it.
+   */
+  public function findReference($path)
+  {
+    $mountedFs = $mountedFsPath = null;
+    $parts = explode('/',$path);
+    for ($i=count($parts)-1; $i >= 0; $i--) {
+      $mountName = $parts[$i];
+
+      // mount path
+      $mountPoint  = implode('/', array_slice($parts,0,$i)); // path to folder the mounted fs is attached to
+      $adapterPath = implode('/', array_slice($parts,$i+1));
+      if ($mountPoint == '') {
+        $mountedFs = $this->getRootMountedFs();
+        $mountedFsPath = $adapterPath;
+      } else if( $this->getMountTable() != null ){
+        $mountedFs = $this->getMountTable()->find($mountName, $mountPoint);
+        $mountedFsPath = $adapterPath;
+      }
+    }
+    return [$mountedFs, $mountedFsPath];
+  }
   /**
    * Returns a list of files and folder inside a path.
    *
