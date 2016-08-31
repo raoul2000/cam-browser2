@@ -29,7 +29,7 @@ class VFS extends Object
   public function __construct($config = [])
   {
     if( isset($config['root']) && is_array($config['root'])) {
-      $this->mfsRoot = new MountedFs('/',$config['root']);
+      $this->mfsRoot = new MountedFs(MountedFs::ROOT_NAME,$config['root']);
       unset($config['root']);
     }
 
@@ -86,23 +86,26 @@ class VFS extends Object
    */
   public function findReference($path)
   {
-    $mountedFs = $mountedFsPath = null;
-    $parts = explode('/',$path);
+    $mountedFs = null;
+    $parts = explode('/',VFSHelper::normalizePath($path));
     for ($i=count($parts)-1; $i >= 0; $i--) {
-      $mountName = $parts[$i];
 
-      // mount path
-      $mountPoint  = implode('/', array_slice($parts,0,$i)); // path to folder the mounted fs is attached to
-      $adapterPath = implode('/', array_slice($parts,$i+1));
-      if ($mountPoint == '') {
+      $mountName    = $parts[$i];  // name of the mounted FS to search for
+      $mountPoint   = implode('/', array_slice($parts,0,$i)); // path to folder the mounted fs is attached to
+      $mountPoint   = $mountPoint == '' ? '/' : $mountPoint;  // normalize mount point to '/'
+      $relativePath = implode('/', array_slice($parts,$i+1)); // path relative to the mountedFs
+
+      if ($mountPoint == '/' && $mountName == '') {
         $mountedFs = $this->getRootMountedFs();
-        $mountedFsPath = $adapterPath;
+        break;
       } else if( $this->getMountTable() != null ){
         $mountedFs = $this->getMountTable()->find($mountName, $mountPoint);
-        $mountedFsPath = $adapterPath;
+        if($mountedFs != null) {
+          break;
+        }
       }
     }
-    return [$mountedFs, $mountedFsPath];
+    return [$mountedFs, $relativePath];
   }
   /**
    * Returns a list of files and folder inside a path.

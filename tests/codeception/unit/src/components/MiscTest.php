@@ -9,6 +9,29 @@ use app\components\VFS;
 class MiscTest extends \Codeception\TestCase\Test
 {
   use Specify;
+  public $vfs;
+
+  protected function _before()
+  {
+    $this->vfs = new VFS([
+      'root' => [
+        'type' => 'local',
+        'options'  => [
+          'rootPath' => '@tests/_work/folder1'
+        ]
+      ],
+      'mount' => [
+        [
+          'name' => 'MOUNTFS1',
+          'type' => 'local',
+          'mount-point' => '/',
+          'options' => [
+            'rootPath' => '@tests/_work/folder2'
+          ]
+        ]
+      ]
+    ]);
+  }
 
   public function testPathParser()
   {
@@ -31,16 +54,50 @@ class MiscTest extends \Codeception\TestCase\Test
 
       // mount path
       $mountPoint = implode('/',array_slice($parts,0,$i));
+      $mountPoint = $mountPoint == '' ? '/' : $mountPoint;
       /*
       if($mountPoint == '') {
         $mountPoint = '/';
       }*/
-      codecept_debug("mountPath = ". $mountPoint);
-
-      // folder
       $folder = implode('/', array_slice($parts,$i+1));
 
-      codecept_debug("folder = ". $folder);
+      codecept_debug("name       = ". $name);
+      codecept_debug("mountPoint = ". $mountPoint);
+      codecept_debug("folder     = ". $folder);
+      codecept_debug("-------------------------------");
     }
+  }
+
+  public function testPathParser2()
+  {
+    $path = '/MOUNTFS1';
+
+    $mountedFs = $mountedFsPath = null;
+    $parts = explode('/',$path);
+    for ($i=count($parts)-1; $i >= 0; $i--) {
+
+      $mountName = $parts[$i];
+
+      // mount path
+      $mountPoint  = implode('/', array_slice($parts,0,$i)); // path to folder the mounted fs is attached to
+      $mountPoint  = $mountPoint == '' ? '/' : $mountPoint;
+      $adapterPath = implode('/', array_slice($parts,$i+1));
+      echo "mountPoint = $mountPoint\n";
+
+      if ($mountPoint == '/' && $mountName == '') {
+        $mountedFs = $this->vfs->getRootMountedFs();
+        $mountedFsPath = $adapterPath;
+        break;
+      } else if( $this->vfs->getMountTable() != null ){
+        $mountedFs = $this->vfs->getMountTable()->find($mountName, $mountPoint);
+        if($mountedFs != null) {
+          $mountedFsPath = $adapterPath;
+          break;
+        }
+      }
+    }
+
+    codecept_debug("mountedFs name       = ". $mountedFs->getName());
+    codecept_debug("mountedFsPath        = ". $mountedFsPath);
   }
 }

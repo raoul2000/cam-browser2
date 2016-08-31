@@ -10,6 +10,11 @@ use \yii\base\Object;
  */
 class MountedFs extends Object
 {
+  /**
+   * Reserved mountedFs name that is used to configure the root FS
+   */
+  const ROOT_NAME = '/';
+
   private $name;
   private $type;
   private $baseUrl;
@@ -27,7 +32,7 @@ class MountedFs extends Object
    * config :  [
    *  'type' => "local",
    *  'baseUrl' => 'http:// ...',
-   *  'mount-point' => '/some/folder',
+   *  'mount-point' => '/some/folder', // not required for the root fs
    *  'options' => [
    *      // adapter options
    *  ]
@@ -68,7 +73,7 @@ class MountedFs extends Object
     if( ! isset($this->type)) {
       throw new \yii\base\InvalidConfigException("the 'type' property is missing");
     }
-    if( ! isset($this->mountPoint)) {
+    if( $this->name != self::ROOT_NAME && ! isset($this->mountPoint)) {
       throw new \yii\base\InvalidConfigException("the 'mount-point' property is missing");
     }
 
