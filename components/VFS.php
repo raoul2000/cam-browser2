@@ -131,14 +131,19 @@ class VFS extends Object
     if( $folderPath == NULL) {
       throw new \yii\base\InvalidCallException("invalid argument : 'folderPath' cannot be NULL");
     }
-
+    $folderPath = VFSHelper::normalizePath($folderPath);
     list($mountedFs, $relativePath) = $this->findReference($folderPath);
     $fileSystem = $mountedFs->getFileSystem();
-    return $fileSystem->listContents($relativePath);
-    /*
-    if($relativePath != '' && $fileSystem->has($relativePath)) {
-    } else {
-      throw new \yii\base\InvalidCallException("path not found : $relativePath (FS = ".$mountedFs->getName().")");
-    }*/
+    $result = $fileSystem->listContents($relativePath);
+
+    $mountList = $this->getMountTable()->findByMountPoint($folderPath);
+    foreach ($mountList as $mount) {
+      $result[] = [
+        'type' => 'mount',
+        'basename' => $mount->getName(),
+        'path' => null
+      ];
+    }
+    return $result;
   }
 }
