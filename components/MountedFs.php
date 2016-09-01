@@ -120,7 +120,7 @@ class MountedFs extends Object
   public function getFileSystem()
   {
     if( ! isset($this->fileSystem)) { // lazy instanciation
-      $this->fileSystem = \League\Flysystem\Filesystem(
+      $this->fileSystem = new \League\Flysystem\Filesystem(
         $this->getAdapter()
       );
     }

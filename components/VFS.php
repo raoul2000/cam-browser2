@@ -79,42 +79,66 @@ class VFS extends Object
   /**
    * Being given a path, this method returns the corresponding mounted FS
    * instance (as configured) and the path to apply to it.
-   *
+   * Results are returned in an array with the following structure :
+   * [
+   *    mountedFs : the MountedFs object instance
+   *    path : (string) the path relative to the mounted FS instance
+   * ]
    * @param  string $path the path to search for (e.g. /a/b/c/d)
    * @return array       at index 0 the MountedFs instance, at index 1 the path to
    * apply to it.
    */
   public function findReference($path)
   {
-    $mountedFs = null;
-    $parts = explode('/',VFSHelper::normalizePath($path));
-    for ($i=count($parts)-1; $i >= 0; $i--) {
+    $mountedFs = $this->getRootMountedFs(); // by default consider the root fs
+    $path      = VFSHelper::normalizePath($path);
 
-      $mountName    = $parts[$i];  // name of the mounted FS to search for
-      $mountPoint   = implode('/', array_slice($parts,0,$i)); // path to folder the mounted fs is attached to
-      $mountPoint   = $mountPoint == '' ? '/' : $mountPoint;  // normalize mount point to '/'
-      $relativePath = implode('/', array_slice($parts,$i+1)); // path relative to the mountedFs
+    if( $this->getMountTable() == null) {
+      if( strpos($path, '/') === 0) {
+        $path = substr($path,1);
+      }
+      $relativePath = $path;
+    } else {
 
-      if ($mountPoint == '/' && $mountName == '') {
-        $mountedFs = $this->getRootMountedFs();
-        break;
-      } else if( $this->getMountTable() != null ){
-        $mountedFs = $this->getMountTable()->find($mountName, $mountPoint);
-        if($mountedFs != null) {
-          break;
+      $parts = explode('/',$path);
+      for ($i=count($parts)-1; $i >= 0; $i--) {
+
+        $mountName    = $parts[$i];  // name of the mounted FS to search for
+        $mountPoint   = implode('/', array_slice($parts,0,$i)); // path to folder the mounted fs is attached to
+        $mountPoint   = $mountPoint == '' ? '/' : $mountPoint;  // normalize mount point to '/'
+        $relativePath = implode('/', array_slice($parts,$i+1)); // path relative to the mountedFs
+
+        if(  $mountName != '' ){
+          $searchResult = $this->getMountTable()->find($mountName, $mountPoint);
+          if( $searchResult != null) {
+            $mountedFs = $searchResult;
+            break;
+          }
         }
       }
     }
+
     return [$mountedFs, $relativePath];
   }
   /**
    * Returns a list of files and folder inside a path.
    *
-   * @param  string $folder the folder to list
+   * @param  string $folderPath the folder to list
    * @return array         list of object representing files and folders
    */
-  public function ls($folder = "/", $filterExtension = null)
+  public function ls($folderPath = "/", $filterExtension = null)
   {
+    if( $folderPath == NULL) {
+      throw new \yii\base\InvalidCallException("invalid argument : 'folderPath' cannot be NULL");
+    }
 
+    list($mountedFs, $relativePath) = $this->findReference($folderPath);
+    $fileSystem = $mountedFs->getFileSystem();
+    return $fileSystem->listContents($relativePath);
+    /*
+    if($relativePath != '' && $fileSystem->has($relativePath)) {
+    } else {
+      throw new \yii\base\InvalidCallException("path not found : $relativePath (FS = ".$mountedFs->getName().")");
+    }*/
   }
 }
