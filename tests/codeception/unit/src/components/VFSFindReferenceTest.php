@@ -11,11 +11,11 @@ use tests\codeception\unit\TestHelper;
 class VFSFindeReferenceTest extends \Codeception\TestCase\Test
 {
    use Specify;
-   public $vfs;
 
-   protected function _before()
+   public function testFindReference()
    {
-     $this->vfs = new VFS([
+
+     $vfs = new VFS([
        'root' => [
          'type' => 'local',
          'options'  => [
@@ -33,12 +33,6 @@ class VFSFindeReferenceTest extends \Codeception\TestCase\Test
          ]
        ]
      ]);
-   }
-   
-   public function testFindReference()
-   {
-
-     $vfs = $this->vfs;
 
      $this->specify('find reference for path /', function () use($vfs){
        list($mountedFs, $fsPath) = $vfs->findReference('/');
@@ -89,7 +83,63 @@ class VFSFindeReferenceTest extends \Codeception\TestCase\Test
        verify("mounted FS is '/'"   , $mountedFs->getName())->equals(MountedFs::ROOT_NAME);
        verify("the path is correct" , $fsPath   )->equals('folder1/sub-folder1/file20.jpg');
      });
+
+     $this->specify('find reference for path /a/b/../c/d/../../end', function () use($vfs){
+       list($mountedFs, $fsPath) = $vfs->findReference('/a/b/../c/d/../../end');
+
+       verify("a mounted FS has been found", $mountedFs)->notNull();
+       verify("a path has been found"      , $fsPath   )->notNull();
+
+       verify("mounted FS is the root FS", $mountedFs->getName())->equals(MountedFs::ROOT_NAME);
+       verify("the path is correct"      , $fsPath   )->equals('a/end');
+     });
+     
    }
 
+
+
+   public function testFindReferenceNoMount()
+   {
+
+     $vfs = new VFS([
+       'root' => [
+         'type' => 'local',
+         'options'  => [
+           'rootPath' => '@tests/_work/folder1'
+         ]
+       ]
+     ]);
+
+     $this->specify('find reference for path /', function () use($vfs){
+       list($mountedFs, $fsPath) = $vfs->findReference('/');
+
+       verify("a mounted FS has been found", $mountedFs)->notNull();
+       verify("a path has been found"      , $fsPath   )->notNull();
+
+       verify("mounted FS is the root FS", $mountedFs->getName())->equals(MountedFs::ROOT_NAME);
+       verify("the path is correct"      , $fsPath   )->equals('');
+     });
+
+
+     $this->specify('find reference for path /a/b/c', function () use($vfs){
+       list($mountedFs, $fsPath) = $vfs->findReference('/a/b/c');
+
+       verify("a mounted FS has been found", $mountedFs)->notNull();
+       verify("a path has been found"      , $fsPath   )->notNull();
+
+       verify("mounted FS is the root FS", $mountedFs->getName())->equals(MountedFs::ROOT_NAME);
+       verify("the path is correct"      , $fsPath   )->equals('a/b/c');
+     });
+
+     $this->specify('find reference for path /a/b/../c/d/../../end', function () use($vfs){
+       list($mountedFs, $fsPath) = $vfs->findReference('/a/b/../c/d/../../end');
+
+       verify("a mounted FS has been found", $mountedFs)->notNull();
+       verify("a path has been found"      , $fsPath   )->notNull();
+
+       verify("mounted FS is the root FS", $mountedFs->getName())->equals(MountedFs::ROOT_NAME);
+       verify("the path is correct"      , $fsPath   )->equals('a/end');
+     });
+   }
 
 }
