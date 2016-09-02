@@ -38,6 +38,12 @@ class VFSHelper
       }
     }
 
+    /**
+     * Normalize the path passed as argument.
+     * 
+     * @param  string $path the path to normalize
+     * @return string       the normalized path value
+     */
     public static function normalizePath($path)
     {
       $path = trim($path);

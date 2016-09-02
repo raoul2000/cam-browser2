@@ -46,6 +46,20 @@ class VFSListContentTest extends \Codeception\TestCase\Test
    */
   public function testCreateSuccess()
   {
+    // being given the folder structure created on _before
+    // this definition produces the following VFS
+    //
+    // /
+    // +-- file0.jpg
+    // +-- pomme
+    //       +-- file1.jpg
+    // +-- poire
+    //       +-- file2.jpg
+    // +-- BANANA (mounted)
+    //       +-- nuts
+    //            +-- file2a.jpg
+    //       +-- fish
+    //            +-- file3.jpg
     $vfs = Yii::createObject([
       'class'    => VFS::className(),
       'root' => [

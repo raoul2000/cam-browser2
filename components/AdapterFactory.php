@@ -22,7 +22,7 @@ class AdapterFactory
    * @throws Exception
    *
    */
-  public function create($type, $options)
+  static public function create($type, $options)
   {
     $adaptater = null;
     switch ($type) {

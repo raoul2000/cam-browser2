@@ -62,7 +62,7 @@ class AdapterFactoryTest extends \Codeception\TestCase\Test
 
     $this->specify('creation fails if adaptater type is not known', function ()  {
       $f = new AdapterFactory();
-      $f->create('DUMMY',[]);
+      AdapterFactory::create('DUMMY',[]);
     },[
       'throws' => [
         'yii\base\InvalidParamException',
@@ -78,7 +78,7 @@ class AdapterFactoryTest extends \Codeception\TestCase\Test
 
     $this->specify('creation fails if rootPath is not provided', function ()  {
       $f = new AdapterFactory();
-      $f->create('local',[]);
+      AdapterFactory::create('local',[]);
     },[
       'throws' => [
         'yii\base\InvalidConfigException',
@@ -89,7 +89,7 @@ class AdapterFactoryTest extends \Codeception\TestCase\Test
 
     $this->specify('creation fails if rootPath is not a valid directoy value', function ()  {
       $f = new AdapterFactory();
-      $f->create('local',[ 'rootPath' => '*NOT/FOUND/file.txt']);
+      AdapterFactory::create('local',[ 'rootPath' => '*NOT/FOUND/file.txt']);
     },[
       'throws' => [
         'League\Flysystem\Exception',
@@ -107,7 +107,7 @@ class AdapterFactoryTest extends \Codeception\TestCase\Test
       verify('folder does not exist', is_dir($path))->false();
 
       $f = new AdapterFactory();
-      $f->create('local',[ 'rootPath' => $path]);
+      AdapterFactory::create('local',[ 'rootPath' => $path]);
 
       expect('folder to exist', is_dir($path))->true();
     });
@@ -115,7 +115,7 @@ class AdapterFactoryTest extends \Codeception\TestCase\Test
 
     $this->specify('rootPath can be an alias', function ()  {
       $f = new AdapterFactory();
-      $f->create('local',[ 'rootPath' => '@tests/_work']);
+      AdapterFactory::create('local',[ 'rootPath' => '@tests/_work']);
       expect('folder @tests/_work to exist', is_dir(Yii::getAlias('@tests/_work')))->true();
     });
 

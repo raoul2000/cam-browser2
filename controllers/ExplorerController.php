@@ -61,6 +61,34 @@ class ExplorerController extends \yii\web\Controller
       ]);
     }
 
+    public function actionVfs($path='/')
+    {
+      $vfs = Yii::createObject([
+        'class' => 'app\components\VFS',
+        'root' => [
+          'type' => 'local',
+          'options'  => [
+            'rootPath' => '@runtime'
+          ]
+        ],
+        'mount' => [
+          [
+            'name' => 'SAMPLE',
+            'type' => 'local',
+            'mount-point' => '/',
+            'options' => [
+              'rootPath' => '@runtime/sample-data'
+            ]
+          ]
+        ]
+      ]);
+      $content = $vfs->ls($path);
+      return $this->render('vfs',[
+        'content' => $content,
+        'path' => $path
+      ]);
+    }
+
     public function actionDeleteFile($path)
     {
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

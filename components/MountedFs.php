@@ -101,6 +101,10 @@ class MountedFs extends Object
   {
     return $this->baseUrl;
   }
+  /**
+   * Returns the path mounted FS is mounted to.
+   * @return string the mounted point
+   */
   public function getMountPoint()
   {
     return $this->mountPoint;

@@ -126,7 +126,7 @@ class VFS extends Object
    * @param  string $folderPath the folder to list
    * @return array         list of object representing files and folders
    */
-  public function ls($folderPath = "/", $filterExtension = null)
+  public function ls($folderPath = "/")
   {
     if( $folderPath == NULL) {
       throw new \yii\base\InvalidCallException("invalid argument : 'folderPath' cannot be NULL");
@@ -139,9 +139,10 @@ class VFS extends Object
     $mountList = $this->getMountTable()->findByMountPoint($folderPath);
     foreach ($mountList as $mount) {
       $result[] = [
-        'type' => 'mount',
+        'type'     => 'mount',
         'basename' => $mount->getName(),
-        'path' => null
+        'dirname'  => $folderPath,
+        'path'     => $folderPath . '/' . $mount->getName()
       ];
     }
     return $result;
