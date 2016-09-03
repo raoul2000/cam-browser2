@@ -126,23 +126,30 @@ class VFS extends Object
    * @param  string $folderPath the folder to list
    * @return array         list of object representing files and folders
    */
-  public function ls($folderPath = "/")
+  public function ls($folderPath = NULL)
   {
-    if( $folderPath == NULL) {
-      throw new \yii\base\InvalidCallException("invalid argument : 'folderPath' cannot be NULL");
-    }
-    $folderPath = VFSHelper::normalizePath($folderPath);
+
+    $folderPath = $folderPath === NULL ? '/' : VFSHelper::normalizePath($folderPath);
+
     list($mountedFs, $relativePath) = $this->findReference($folderPath);
     $fileSystem = $mountedFs->getFileSystem();
     $result = $fileSystem->listContents($relativePath);
 
+    // add the VFS absolute path for each item
+    foreach ($result as &$item) {
+      $item['vfspath'] = ($folderPath === '/' ? '' : $folderPath) . '/' . $item['basename'];
+      //var_dump($item);
+    }
+
+    // add FS mounted to the path to list if there are some
     $mountList = $this->getMountTable()->findByMountPoint($folderPath);
     foreach ($mountList as $mount) {
       $result[] = [
         'type'     => 'mount',
+        'path'     => $relativePath . '/' . $mount->getName() ,
         'basename' => $mount->getName(),
-        'dirname'  => $folderPath,
-        'path'     => $folderPath . '/' . $mount->getName()
+        'dirname'  => $relativePath,
+        'vfspath'  => ($folderPath === '/' ? '': $folderPath ) . '/' . $mount->getName()
       ];
     }
     return $result;

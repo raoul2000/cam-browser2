@@ -14,12 +14,12 @@
           }elseif ($item['type'] === 'dir') {
             echo \yii\helpers\Html::a(
               'd - ' . $item['basename'],
-              ['explorer/vfs','path' => $item['path']]
+              ['explorer/vfs','path' => $item['vfspath'] ]
             ) . '<br/>';
           } elseif ($item['type'] === 'mount') {
             echo \yii\helpers\Html::a(
             'm - ' . $item['basename'],
-            ['explorer/vfs','path' => $item['path']]
+            ['explorer/vfs','path' => $item['vfspath']  ]
             ) . '<br/>';
           }
         }

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use  app\components\Fs;
+use  app\components\VFSHelper;
 
 class ExplorerController extends \yii\web\Controller
 {
@@ -63,6 +64,8 @@ class ExplorerController extends \yii\web\Controller
 
     public function actionVfs($path='/')
     {
+      $path = VFSHelper::normalizePath($path);
+
       $vfs = Yii::createObject([
         'class' => 'app\components\VFS',
         'root' => [
@@ -75,9 +78,17 @@ class ExplorerController extends \yii\web\Controller
           [
             'name' => 'SAMPLE',
             'type' => 'local',
+            'mount-point' => '/sample-data/WEB/assets/2bb476ee',
+            'options' => [
+              'rootPath' => '@webroot'
+            ]
+          ],
+          [
+            'name' => 'WEB',
+            'type' => 'local',
             'mount-point' => '/',
             'options' => [
-              'rootPath' => '@runtime/sample-data'
+              'rootPath' => '@webroot'
             ]
           ]
         ]

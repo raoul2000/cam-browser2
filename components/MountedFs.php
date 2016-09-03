@@ -110,6 +110,10 @@ class MountedFs extends Object
     return $this->mountPoint;
   }
 
+  public function isRoot()
+  {
+    return $this->getName() === self::ROOT_NAME;
+  }
   public function getAdapter()
   {
     if( ! isset($this->adapter)) { // lazy instanciation

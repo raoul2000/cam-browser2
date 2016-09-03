@@ -4,6 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
+        <a href="index.php?r=explorer/vfs&path=/">VFS Explorer</a>
         <div class="list-group">
           <?php
             if( count($days) == 0 ) {
