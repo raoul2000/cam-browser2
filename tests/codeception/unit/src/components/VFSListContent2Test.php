@@ -75,7 +75,7 @@ class VFSListContent2Test extends \Codeception\TestCase\Test
       codecept_debug($result);
 
       expect("an array is returned", is_array($result))->true();
-      expect("contains 3 elements", count($result))->equals(4);
+      expect("contains 3 elements", count($result))->equals(1);
     });
 
   }
