@@ -141,6 +141,7 @@ class VFS extends Object
       //var_dump($item);
     }
 
+
     // add FS mounted to the path to list if there are some
     $mountList = $this->getMountTable()->findByMountPoint($folderPath);
     foreach ($mountList as $mount) {
@@ -149,7 +150,7 @@ class VFS extends Object
         'path'     => $relativePath . '/' . $mount->getName() ,
         'basename' => $mount->getName(),
         'dirname'  => $relativePath,
-        'vfspath'  => ($folderPath === '/' ? '': $folderPath ) . '/' . $mount->getName()
+        'vfspath'  => ($folderPath === '/' ? '': $folderPath ) . $mount->getName()
       ];
     }
     return $result;
