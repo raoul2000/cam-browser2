@@ -52,6 +52,7 @@ class AdapterFactory
         break;
 
       case 'ftp':
+        $adaptater = new \League\Flysystem\Adapter\Ftp($options);
 
         # code...
         break;
