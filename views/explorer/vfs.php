@@ -1,5 +1,6 @@
 <?php
 /* @var $this yii\web\View */
+use \yii\helpers\Html;
 ?>
 
 <div class="row">
@@ -7,15 +8,37 @@
       <div>
         <ol class="breadcrumb">
           <?php
+
             $folders = explode('/',$path);
-            $toEnd = count($folders);
-            foreach ($folders as $folder) {
-              if( 0 === --$toEnd ) {
+            $crumbs = [];
+            $active = false; // is the current folder inserted ?
+            while( ($folder = array_pop($folders)))
+            {
+              if( $active == false ) {
                 $breadcrumb = '<li class="active">' . $folder . '</li>';
+                $active = true;
               } else {
-                $breadcrumb = '<li><a href="#">' . $folder .'</a></li>';
+                $folderPath = implode('/', $folders);
+                $breadcrumb = '<li>'
+                . Html::a(
+                  $folder,
+                  ['explorer/vfs','path' => $folderPath . '/' . $folder]
+                ). '</li>';
               }
-              echo $breadcrumb;
+              $crumbs[] = $breadcrumb;
+            }
+            // add the first crumb to the root folder
+            $crumbs[] = '<li>'
+              . '<span class="glyphicon glyphicon-home" aria-hidden="true"></span> '
+              . Html::a(
+                'home',
+                ['explorer/vfs','path' => '/']
+              ). '</li>';
+
+            // render breadcrumbs
+            $breadcrumb = array_reverse($crumbs);
+            foreach ($breadcrumb as $item) {
+              echo $item;
             }
           ?>
         </ol>
