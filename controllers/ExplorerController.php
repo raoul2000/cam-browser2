@@ -86,7 +86,7 @@ class ExplorerController extends \yii\web\Controller
           [
             'name' => 'WEB',
             'type' => 'local',
-            'mount-point' => '/',
+            'mount-point' => '/sample-data',
             'options' => [
               'rootPath' => '@webroot'
             ]
@@ -96,7 +96,8 @@ class ExplorerController extends \yii\web\Controller
       $content = $vfs->ls($path);
       return $this->render('vfs',[
         'content' => $content,
-        'path' => $path
+        'path' => $path,
+        'parent' => VFSHelper::dirname($path)
       ]);
     }
 

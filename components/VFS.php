@@ -150,7 +150,7 @@ class VFS extends Object
         'path'     => $relativePath . '/' . $mount->getName() ,
         'basename' => $mount->getName(),
         'dirname'  => $relativePath,
-        'vfspath'  => ($folderPath === '/' ? '': $folderPath ) . $mount->getName()
+        'vfspath'  => ($folderPath === '/' ? '': $folderPath . '/') . $mount->getName()
       ];
     }
     return $result;
