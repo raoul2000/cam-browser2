@@ -78,7 +78,7 @@ class ExplorerController extends \yii\web\Controller
           [
             'name' => 'SAMPLE',
             'type' => 'local',
-            'mount-point' => '/sample-data/WEB/assets/2bb476ee',
+            'mount-point' => '/sample-data/WEB/assets',
             'options' => [
               'rootPath' => '@webroot'
             ]
