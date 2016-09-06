@@ -155,4 +155,15 @@ class VFS extends Object
     }
     return $result;
   }
+
+  public function read($filePath)
+  {
+    $filePath = VFSHelper::normalizePath($filePath);
+    $dir = VFSHelper::dirname($filePath);
+    list($mountedFs, $relativePath) = $this->findReference($folderPath);
+    $fileSystem = $mountedFs->getFileSystem();
+
+    
+
+  }
 }

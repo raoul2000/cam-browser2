@@ -8,6 +8,7 @@ use  app\components\VFSHelper;
 
 class ExplorerController extends \yii\web\Controller
 {
+    public $vfs;
     public function actions()
     {
       return [
@@ -17,6 +18,52 @@ class ExplorerController extends \yii\web\Controller
       ];
     }
 
+    public function init()
+    {
+      $this->vfs = Yii::createObject([
+        'class' => 'app\components\VFS',
+        'root' => [
+          'type' => 'local',
+          'options'  => [
+            'rootPath' => '@runtime'
+          ]
+        ],
+        'mount' => [
+          [
+            'name' => 'SAMPLE',
+            'type' => 'local',
+            'mount-point' => '/sample-data/WEB/assets',
+            'options' => [
+              'rootPath' => '@webroot'
+            ]
+          ],
+          [
+            'name' => 'WEB',
+            'type' => 'local',
+            'mount-point' => '/sample-data',
+            'options' => [
+              'rootPath' => '@webroot'
+            ]
+          ],
+          [
+            'name' => 'FTP',
+            'type' => 'ftp',
+            'mount-point' => '/sample-data',
+            'options' => [
+              'host' => '127.0.0.1',
+              'username' => 'username',
+              'password' => 'password',
+
+              /** optional config settings */
+              'port' => 7002,
+              'passive' => true,
+              'timeout' => 30,
+            ]
+          ]
+        ]
+      ]);
+
+    }
     public function actionIndex()
     {
       require_once('../components/browse-folder.php');
@@ -66,49 +113,20 @@ class ExplorerController extends \yii\web\Controller
     {
       $path = VFSHelper::normalizePath($path);
 
-      $vfs = Yii::createObject([
-        'class' => 'app\components\VFS',
-        'root' => [
-          'type' => 'local',
-          'options'  => [
-            'rootPath' => '@runtime'
-          ]
-        ],
-        'mount' => [
-          [
-            'name' => 'SAMPLE',
-            'type' => 'local',
-            'mount-point' => '/sample-data/WEB/assets',
-            'options' => [
-              'rootPath' => '@webroot'
-            ]
-          ],
-          [
-            'name' => 'WEB',
-            'type' => 'local',
-            'mount-point' => '/sample-data',
-            'options' => [
-              'rootPath' => '@webroot'
-            ]
-          ],
-          [
-            'name' => 'FTP',
-            'type' => 'ftp',
-            'mount-point' => '/sample-data',
-            'options' => [
-              'host' => '127.0.0.1',
-              'username' => 'username',
-              'password' => 'password',
-
-              /** optional config settings */
-              'port' => 7002,
-              'passive' => true,
-              'timeout' => 30,
-            ]
-          ]
-        ]
+      $content = $this->vfs->ls($path);
+      return $this->render('vfs',[
+        'content' => $content,
+        'path' => $path,
+        'parent' => VFSHelper::dirname($path)
       ]);
-      $content = $vfs->ls($path);
+    }
+
+    public function actionViewFileContent($path='/')
+    {
+      $path = VFSHelper::normalizePath($path);
+
+
+      $content = $this->vfs->ls($path);
       return $this->render('vfs',[
         'content' => $content,
         'path' => $path,
