@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use  app\components\Fs;
 use  app\components\VFSHelper;
+use yii\helpers\FileHelper;
 
 class ExplorerController extends \yii\web\Controller
 {
@@ -124,14 +125,11 @@ class ExplorerController extends \yii\web\Controller
     public function actionViewFileContent($path='/')
     {
       $path = VFSHelper::normalizePath($path);
+      ////$mimeType = FileHelper::getMimeTypeByExtension($path);
+      //\Yii::$app->response->format = FileHelper::getMimeTypeByExtension($path);
 
-
-      $content = $this->vfs->ls($path);
-      return $this->render('vfs',[
-        'content' => $content,
-        'path' => $path,
-        'parent' => VFSHelper::dirname($path)
-      ]);
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+      return $this->vfs->read($path);
     }
 
     public function actionDeleteFile($path)
