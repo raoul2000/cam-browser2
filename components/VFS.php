@@ -4,6 +4,7 @@ namespace app\components;
 
 use Yii;
 use \yii\base\Object;
+use yii\helpers\FileHelper;
 
 /**
  * Virtual File System implentation
@@ -138,7 +139,9 @@ class VFS extends Object
     // add the VFS absolute path for each item
     foreach ($result as &$item) {
       $item['vfspath'] = ($folderPath === '/' ? '' : $folderPath) . '/' . $item['basename'];
-      //var_dump($item);
+      if( $item['type'] === 'file') {
+        $item['mimetype'] =  FileHelper::getMimeTypeByExtension($item['basename']);
+      }
     }
 
 
@@ -159,11 +162,10 @@ class VFS extends Object
   public function read($filePath)
   {
     $filePath = VFSHelper::normalizePath($filePath);
-    $dir = VFSHelper::dirname($filePath);
-    list($mountedFs, $relativePath) = $this->findReference($folderPath);
+    //$dir = VFSHelper::dirname($filePath);
+    list($mountedFs, $relativePath) = $this->findReference($filePath);
     $fileSystem = $mountedFs->getFileSystem();
-
-    
+    return  $fileSystem->read($relativePath);
 
   }
 }
