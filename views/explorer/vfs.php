@@ -71,7 +71,15 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
         }
         foreach ($content as $item) {
           if( $item['type'] === 'file') {
-            $icon = '<span class="glyphicon glyphicon-file" aria-hidden="true"></span>';
+            if( in_array( strtolower($item['extension']),['jpg','jpeg','png','gif'])) {
+              $icon = '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>';
+            }
+            elseif( in_array( strtolower($item['extension']),['mp4','mov','wmv'])) {
+              $icon = '<span class="glyphicon glyphicon-film" aria-hidden="true"></span>';
+            } else {
+              $icon = '<span class="glyphicon glyphicon-file" aria-hidden="true"></span>';
+
+            }
             $nameCol = $item['basename'];
             $nameCol =  \yii\helpers\Html::a(
               $item['basename'],
