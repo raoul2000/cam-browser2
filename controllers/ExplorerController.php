@@ -115,11 +115,18 @@ class ExplorerController extends \yii\web\Controller
       $path = VFSHelper::normalizePath($path);
 
       $content = $this->vfs->ls($path);
-      return $this->render('vfs',[
+      $params = [
         'content' => $content,
-        'path' => $path,
-        'parent' => VFSHelper::dirname($path)
-      ]);
+        'path'    => $path,
+        'parent'  => VFSHelper::dirname($path)
+      ];
+      if(  Yii::$app->request->isAjax ) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $params;
+      } else {
+        return $this->render('vfs',$params);
+
+      }
     }
 
     public function actionViewFileContent($path='/')

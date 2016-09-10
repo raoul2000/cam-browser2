@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 use \yii\helpers\Html;
+use \yii\helpers\Url;
 use yii\web\View;
 
 /* @var $this yii\web\View */
@@ -9,7 +10,24 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
   'depends' => [\yii\web\JqueryAsset::className()]
 ]);
 ?>
-
+<div class="row">
+  <div class="col-md-12">
+    <?php
+     $url = Url::to(['explorer/vfs','path' => $path ]);
+      echo Html::a(
+        'test ajax call',
+        ['#'],
+        ['onclick'=> "
+      console.log('bing = $url');
+      $.get('$url',function(data){
+        console.log(data);
+      });
+      return false;
+        "]
+      );
+    ?>
+  </div>
+</div>
 <div class="row">
     <div class="col-md-12">
       <div>
