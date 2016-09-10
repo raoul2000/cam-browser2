@@ -56,27 +56,33 @@ class FlySystemTest extends \Codeception\TestCase\Test
 
   public function testFTPAdapter()
   {
-    /*
     $this->specify('play with a local adapter', function () {
 
       $filesystem = new Filesystem(new \League\Flysystem\Adapter\Ftp([
-          'host' => '127.0.0.1',
+/*          'host' => '127.0.0.1',
           'username' => 'username',
           'password' => 'password',
+          */
+          'host' => 'u58396481.1and1-data.host',
+          'username' => 'u58396481-sl-ctrl',
+          'password' => '********',
 
-
-          'port' => 7002,
-          'root' => '/_work',
-          'passive' => true,
-          'ssl' => false,
-          'timeout' => 30,
+          //'port' => 7002,
+          'root' => '/'
+          //'passive' => true,
+          //'ssl' => false,
+          //'timeout' => 30,
       ]));
 
-
-      $contents = $filesystem->listContents('',true);
-      codecept_debug($contents);
+      //$contents = $filesystem->listContents('codeception/_output',true);
+      $contents = $filesystem->listContents('/');
+      //codecept_debug($contents);
+      //$filesystem->read('codeception/_output');
+      //$filesystem->read('codeception/_output/file2.jpg');
+      $content = $filesystem->read('ping.db');
+      codecept_debug($content);
+      //$filesystem->read('codeception.yml');
     });
-    */
 
   }
 }
