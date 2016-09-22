@@ -21,6 +21,8 @@ class ExplorerController extends \yii\web\Controller
 
     public function init()
     {
+      $this->vfs = Yii::$app->VFS;
+        /*
       $this->vfs = Yii::createObject([
         'class' => 'app\components\VFS',
         'root' => [
@@ -55,7 +57,6 @@ class ExplorerController extends \yii\web\Controller
               'username' => 'username',
               'password' => 'password',
 
-              /** optional config settings */
               'port' => 7002,
               'passive' => true,
               'timeout' => 30,
@@ -63,6 +64,7 @@ class ExplorerController extends \yii\web\Controller
           ]
         ]
       ]);
+*/
 
     }
     public function actionIndex()

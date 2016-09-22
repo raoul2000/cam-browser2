@@ -136,7 +136,8 @@ class VFS extends Object
     $fileSystem = $mountedFs->getFileSystem();
     $result = $fileSystem->listContents($relativePath);
 
-    // add the VFS absolute path for each item
+    // add the VFS absolute path for each item and thie MIME type
+    // for file items
     foreach ($result as &$item) {
       $item['vfspath'] = ($folderPath === '/' ? '' : $folderPath) . '/' . $item['basename'];
       if( $item['type'] === 'file') {

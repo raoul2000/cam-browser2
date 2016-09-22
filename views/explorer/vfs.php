@@ -88,6 +88,7 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
           <?php
         }
         foreach ($content as $item) {
+          //var_dump($item);
           if( $item['type'] === 'file') {
             if( in_array( strtolower($item['extension']),['jpg','jpeg','png','gif'])) {
               $icon = '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>';
@@ -102,7 +103,13 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
             $nameCol =  \yii\helpers\Html::a(
               $item['basename'],
               ['#' ],
-              [ 'class' => 'view-file-content' ,'data' => [ 'path' => $item['vfspath'], 'mimetype' => $item['mimetype'] ] ]
+              [ 'class' => 'view-file-content' ,
+                'data' => [
+                  'path'      => $item['vfspath'],
+                  'mimetype'  => $item['mimetype'],
+                  'extension' => $item['extension']
+                ]
+              ]
             );
 
           } else {
