@@ -2,17 +2,17 @@
 
 $params = require(__DIR__ . '/params.php');
 
+// load Virtual File System Configuration
+$VFS = require(__DIR__ . '/VFS.php');
+$VFS['class'] = 'app\components\VFS';
+
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'defaultRoute' => 'explorer/vfs',
     'components' => [
-        'fs' => [
-            'class'    => '\app\components\Fs',
-            'basePath' => '@runtime/sample-data',
-            'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data'
-        ],
+        'VFS' => $VFS,
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'sc9OT8bZ4x6Q4P0lOm9xSA2ofNYfXyf2',
