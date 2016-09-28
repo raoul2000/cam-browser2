@@ -59,15 +59,15 @@ class FlySystemTest extends \Codeception\TestCase\Test
     $this->specify('play with a local adapter', function () {
 
       $filesystem = new Filesystem(new \League\Flysystem\Adapter\Ftp([
-/*          'host' => '127.0.0.1',
+         'host' => '127.0.0.1',
           'username' => 'username',
           'password' => 'password',
-          */
+          /*
           'host' => 'u58396481.1and1-data.host',
           'username' => 'u58396481-sl-ctrl',
           'password' => '********',
-
-          //'port' => 7002,
+*/
+          'port' => 7002,
           'root' => '/'
           //'passive' => true,
           //'ssl' => false,
@@ -79,8 +79,8 @@ class FlySystemTest extends \Codeception\TestCase\Test
       //codecept_debug($contents);
       //$filesystem->read('codeception/_output');
       //$filesystem->read('codeception/_output/file2.jpg');
-      $content = $filesystem->read('ping.db');
-      codecept_debug($content);
+      //$content = $filesystem->read('ping.db');
+      //codecept_debug($content);
       //$filesystem->read('codeception.yml');
     });
 

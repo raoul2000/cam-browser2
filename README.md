@@ -2,14 +2,40 @@ This is a work in progress
 
 File browser built on top of [Flysystem](https://flysystem.thephpleague.com/).
 
+# Install
+
+```
+git clone https://github.com/raoul2000/cam-browser2.git
+cd cam-browser2
+composer install
+```
+
 
 # Testing
 
-This directory contains various tests for the basic application.
-
-Tests in `codeception` directory are developed with [Codeception PHP Testing Framework](http://codeception.com/).
+The `tests\codeception` directory contains various tests for the basic application. These tests are developed with [Codeception PHP Testing Framework](http://codeception.com/).
 
 After creating the basic application, follow these steps to prepare for the tests:
+
+## Using the *vendor* Codeception
+
+When you install the application, the *codeception* dependency is included so you just have to navigate to the `tests` subfolder and run :
+
+1. Install and start the local FTP server:
+```
+npm install
+npm start
+```
+
+2. Build and run tests
+```
+..\vendor\bin\codecept build
+..\vendor\bin\codecept run unit
+```
+
+## Install Codeception globally
+
+Another option is to install Codeception globally.
 
 1. Install Codeception if it's not yet installed:
 
@@ -42,10 +68,10 @@ npm start
 
 3. Now you can run the tests with the following commands:
 
-   ```
-   # run unit tests
-   codecept run unit
-   ```
+ ```
+ # run unit tests
+ codecept run unit
+ ```
 
 Please refer to [Codeception tutorial](http://codeception.com/docs/01-Introduction) for
 more details about writing and running acceptance, functional and unit tests.
