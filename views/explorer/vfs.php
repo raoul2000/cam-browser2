@@ -133,8 +133,10 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
   </div> <!-- end of nav panel -->
 
   <div class="col-md-9">
-    <div id="file-content" class="">
+    <div id="file-content-container" class="">
+      <div id="file-content" class="">
 
+      </div>
     </div>
   </div><!-- end of main content -->
 </div>

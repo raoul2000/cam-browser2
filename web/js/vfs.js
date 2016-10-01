@@ -6,7 +6,7 @@
         ev.preventDefault();
 
         if(cm !== null) {
-          cm.toTextArea();
+          cm.getWrapperElement().parentNode.removeChild(cm.getWrapperElement());
           cm = null;
         }
 
@@ -31,13 +31,10 @@
             'r'    : "explorer/view-file-content",
             "path" : filePath
           } , function( data ) {
-            $('#file-content').html('<textarea  id="txt-content-editor" class="form-control" rows="15" style="display:none"></textarea>' );
-            $('#txt-content-editor').text(data);
-
-            var txtAreaEl = document.getElementById('txt-content-editor');
-            cm = CodeMirror.fromTextArea(txtAreaEl,{"mode" : "javascript"});
-
-
+            cm = CodeMirror( document.getElementById('file-content'), {
+              value: data,
+              mode:  "javascript"
+            });
           });
         }
       });
