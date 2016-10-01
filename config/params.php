@@ -11,54 +11,5 @@ return [
     'filePattern' => "*.jpg",
     // timezone adjustment applied to the file last modification date
     // timezone support in php : http://php.net/manual/fr/timezones.php
-    'timezone' => "Europe/Paris",
-    'fs' => [
-      'root' => [
-        'type'   => 'local',
-        'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',  // optionnal
-        'options'  => [  // see http://flysystem.thephpleague.com/adapter/local/
-          'rootPath' => '@runtime/sample-data'
-        ]
-      ],
-      'mount' => [
-          [
-            'name' => 'mount1',
-            'mount-point' => '/',
-            'type' => 'local',
-            'baseUrl'  => 'http://localhost/devws/lab/cam-browser2/runtime/sample-data',  // optionnal
-            'options' => [  // see http://flysystem.thephpleague.com/adapter/local/
-              'rootPath' => '/a/b/c',
-              'links' => "skip", // 'skip', 'disallow',
-              'permissions' => [
-                'file' => [
-                  'public' => 0744,
-                  'private' => 0700
-                ],
-                'dir' => [
-                  'public' => 0755,
-                  'private' => 0700
-                ]
-              ]
-            ]
-          ],
-          [
-            'name' => 'mount2',
-            'mount-point' => '/folder',
-            'type' => 'ftp',
-            'baseUrl'  => 'http://hostname/folder1',  // optionnal
-            'options' => [
-              'host' => 'ftp.example.com',
-              'username' => 'username',
-              'password' => 'password',
-
-              /** optional config settings */
-              'port' => 21,
-              'root' => '/path/to/root',
-              'passive' => true,
-              'ssl' => true,
-              'timeout' => 30,
-            ]
-          ]
-      ]
-    ]
+    'timezone' => "Europe/Paris"
 ];

@@ -20,8 +20,10 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/app.css',
+        '../node_modules/codemirror/lib/codemirror.css',
     ];
     public $js = [
+      '../node_modules/codemirror/lib/codemirror.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

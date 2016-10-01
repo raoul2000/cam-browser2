@@ -15,14 +15,18 @@
             "path" : filePath
           });
           $('#file-content').html('<img src="'+imgSrc+'" class="img-responsive"/>');
-        }else if (mimeHigh === 'text' || fileMimeType == "application/xml" ||
-        ['php', 'js'].indexOf(fileExtension) != -1 ) {
+        }
+        else if (mimeHigh === 'text' || fileMimeType == "application/xml" ||
+                ['php', 'js'].indexOf(fileExtension) != -1 )
+        {
           $.get( "index.php", {
             'r' : "explorer/view-file-content",
             "path" : filePath
           } , function( data ) {
             $('#file-content').html('<textarea  id="txt-content-editor" class="form-control" rows="15"></textarea>' );
             $('#txt-content-editor').text(data);
+
+            
           });
         }
       });
