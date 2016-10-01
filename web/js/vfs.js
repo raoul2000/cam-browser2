@@ -1,7 +1,15 @@
+    var cm=null;
   $(function() {
+
       $('.view-file-content').on('click', function(ev) {
         ev.stopPropagation();
         ev.preventDefault();
+
+        if(cm !== null) {
+          cm.toTextArea();
+          cm = null;
+        }
+
         var $this = $(ev.target);
         var filePath = $this.data('path');
         var fileMimeType = $this.data('mimetype');
@@ -20,13 +28,16 @@
                 ['php', 'js'].indexOf(fileExtension) != -1 )
         {
           $.get( "index.php", {
-            'r' : "explorer/view-file-content",
+            'r'    : "explorer/view-file-content",
             "path" : filePath
           } , function( data ) {
-            $('#file-content').html('<textarea  id="txt-content-editor" class="form-control" rows="15"></textarea>' );
+            $('#file-content').html('<textarea  id="txt-content-editor" class="form-control" rows="15" style="display:none"></textarea>' );
             $('#txt-content-editor').text(data);
 
-            
+            var txtAreaEl = document.getElementById('txt-content-editor');
+            cm = CodeMirror.fromTextArea(txtAreaEl,{"mode" : "javascript"});
+
+
           });
         }
       });
