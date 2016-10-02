@@ -75,7 +75,7 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
 
 <div class="row">
   <div class="col-md-2">
-    <table class="table table-hover">
+    <table class="table table-hover table-condensed">
       <?php
         if( $parent != $path) {
           $nameCol =  \yii\helpers\Html::a(
@@ -93,7 +93,6 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
           //var_dump($item);
           //continue;
           if( $item['type'] === 'file') {
-            $ext = $icon = '';
             $icon = '<span class="glyphicon glyphicon-file" aria-hidden="true"></span>';
             if( array_key_exists('extension',$item)) {
               $ext = strtolower($item['extension']);

@@ -11,5 +11,11 @@ return [
     'filePattern' => "*.jpg",
     // timezone adjustment applied to the file last modification date
     // timezone support in php : http://php.net/manual/fr/timezones.php
-    'timezone' => "Europe/Paris"
+    'timezone' => "Europe/Paris",
+    'editor' => [
+      'md' => ['mode' => 'markdown'],
+      'js' => [ 'mode' => 'javascript' ],
+      'php' => ['mode' => 'php'],
+      'txt, css' => ['mode' => 'default']
+    ]
 ];
