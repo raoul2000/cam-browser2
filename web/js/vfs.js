@@ -52,7 +52,6 @@
               lineNumbers : true,
               extraKeys: {
                 "F11": function(cm) {
-
                   cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                 },
                 "Esc": function(cm) {
@@ -60,6 +59,10 @@
                 }
               }
             });
+            CodeMirror.commands.save = function(editor){
+              console.log(editor.getValue());
+              return false;
+            };
           });
         }
       });
