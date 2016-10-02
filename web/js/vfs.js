@@ -40,7 +40,7 @@
           $('#file-content').html('<img src="'+imgSrc+'" class="img-responsive"/>');
         }
         else if (mimeHigh === 'text' || fileMimeType == "application/xml" ||
-                ['php', 'js'].indexOf(fileExtension) != -1 )
+                ['php', 'js','md'].indexOf(fileExtension) != -1 )
         {
           $.get( "index.php", {
             'r'    : "explorer/view-file-content",
