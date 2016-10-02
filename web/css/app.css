@@ -49,3 +49,6 @@ div.thumbnail:hover {
 .CodeMirror-fullscreen {
   margin-top:50px;
 }
+#selected-file {
+  font-weight: bold;
+}

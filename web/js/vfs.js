@@ -10,15 +10,27 @@
           cm.getWrapperElement().parentNode.removeChild(cm.getWrapperElement());
           cm = null;
         }
-
+        //$('#selected-file').empty();
         $('#file-content').empty();
 
+        // get info on item to display.
         var $this = $(ev.target);
         var filePath = $this.data('path');
         var fileMimeType = $this.data('mimetype');
         var fileExtension = $this.data('extension');
         var mimeHigh = fileMimeType.split('/')[0];
+
+        var basename = filePath.split(/[\\/]/).pop();
         console.log("path = "+filePath+" MIME = "+fileMimeType+ " mimeHigh = "+mimeHigh);
+        console.log("basename = "+basename);
+
+        // update breadcrumb
+        if( document.getElementById('selected-file') === null) {
+          $('.breadcrumb').append('<li id="selected-file"/>');
+        }
+        $('#selected-file').html(basename);
+
+        // show content
 
         if( mimeHigh === 'image') {
           var imgSrc = "index.php?"+ $.param({
