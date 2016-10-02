@@ -1,14 +1,17 @@
-    var cm=null;
+  var cm=null;
   $(function() {
 
       $('.view-file-content').on('click', function(ev) {
         ev.stopPropagation();
         ev.preventDefault();
 
+        // clear file content view
         if(cm !== null) {
           cm.getWrapperElement().parentNode.removeChild(cm.getWrapperElement());
           cm = null;
         }
+        
+        $('#file-content').empty();
 
         var $this = $(ev.target);
         var filePath = $this.data('path');
