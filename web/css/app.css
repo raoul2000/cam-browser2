@@ -38,3 +38,14 @@ div.thumbnail:hover {
 .chk-date {
   margin-right:10px;
 }
+
+.wrap {
+  padding-top: 70px;
+}
+.CodeMirror {
+  height:auto;
+  border-left:1px solid #BBB;
+}
+.CodeMirror-fullscreen {
+  margin-top:50px;
+}

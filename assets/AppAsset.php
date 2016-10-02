@@ -18,13 +18,15 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+      'node_modules/codemirror/lib/codemirror.css',
+      'node_modules/codemirror/addon/display/fullscreen.css',
         'css/site.css',
-        'css/app.css',
-        'node_modules/codemirror/lib/codemirror.css',
+        'css/app.css'
     ];
     public $js = [
       'node_modules/codemirror/lib/codemirror.js',
       'node_modules/codemirror/mode/javascript/javascript.js',
+      'node_modules/codemirror/addon/display/fullscreen.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

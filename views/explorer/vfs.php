@@ -10,7 +10,7 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
   'depends' => [\yii\web\JqueryAsset::className()]
 ]);
 ?>
-<div class="row">
+<div class="row hidden"  >
   <div class="col-md-12">
     <?php
      $url = Url::to(['explorer/vfs','path' => $path ]);
@@ -28,6 +28,8 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
     ?>
   </div>
 </div>
+
+
 <div class="row">
     <div class="col-md-12">
       <div>
@@ -72,7 +74,7 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
 </div>
 
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-2">
     <table class="table table-hover">
       <?php
         if( $parent != $path) {
@@ -132,7 +134,7 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
     </table>
   </div> <!-- end of nav panel -->
 
-  <div class="col-md-9">
+  <div class="col-md-10">
     <div id="file-content-container" class="">
       <div id="file-content" class="">
 

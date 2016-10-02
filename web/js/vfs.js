@@ -10,7 +10,7 @@
           cm.getWrapperElement().parentNode.removeChild(cm.getWrapperElement());
           cm = null;
         }
-        
+
         $('#file-content').empty();
 
         var $this = $(ev.target);
@@ -36,7 +36,17 @@
           } , function( data ) {
             cm = CodeMirror( document.getElementById('file-content'), {
               value: data,
-              mode:  "javascript"
+              mode:  "javascript",
+              lineNumbers : true,
+              extraKeys: {
+                "F11": function(cm) {
+
+                  cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                },
+                "Esc": function(cm) {
+                  if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                }
+              }
             });
           });
         }
