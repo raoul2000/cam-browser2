@@ -18,6 +18,8 @@
         var filePath = $this.data('path');
         var fileMimeType = $this.data('mimetype');
         var fileExtension = $this.data('extension');
+        var cmOptions = $this.data('cm-options');
+        console.log(cmOptions);
         var mimeHigh = fileMimeType.split('/')[0];
 
         var basename = filePath.split(/[\\/]/).pop();
@@ -46,9 +48,10 @@
             'r'    : "explorer/view-file-content",
             "path" : filePath
           } , function( data ) {
+
             cm = CodeMirror( document.getElementById('file-content'), {
               value: data,
-              mode:  "javascript",
+              mode:  cmOptions ? cmOptions.mode : "javascript",
               lineNumbers : true,
               extraKeys: {
                 "F11": function(cm) {

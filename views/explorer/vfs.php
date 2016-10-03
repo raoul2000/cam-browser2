@@ -95,6 +95,7 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
           if( $item['type'] === 'file') {
             $icon = '<span class="glyphicon glyphicon-file" aria-hidden="true"></span>';
             if( array_key_exists('extension',$item)) {
+
               $ext = strtolower($item['extension']);
               if( in_array( $ext,['jpg','jpeg','png','gif'])) {
                 $icon = '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>';
@@ -105,6 +106,17 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
             } else {
               $item['extension'] = '';
             }
+            $item['cm-options'] = [];
+            if( isset(Yii::$app->params['editor']) && is_array(Yii::$app->params['editor'])) {
+              $editor = Yii::$app->params['editor'];
+              $ext = $item['extension'];
+              if( array_key_exists($ext,$editor)) {
+                $item['cm-options'] = $editor[$ext];
+              }
+            } else {
+              // no edior config
+            }
+
             $nameCol = $item['basename'];
             $nameCol =  \yii\helpers\Html::a(
               $item['basename'],
@@ -113,7 +125,8 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
                 'data' => [
                   'path'      => $item['vfspath'],
                   'mimetype'  => $item['mimetype'],
-                  'extension' => $item['extension']
+                  'extension' => $item['extension'],
+                  'cm-options'=> $item['cm-options']
                 ]
               ]
             );
