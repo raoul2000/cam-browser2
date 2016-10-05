@@ -167,11 +167,17 @@ class VFS extends Object
 
   public function read($filePath)
   {
-    $filePath = VFSHelper::normalizePath($filePath);
-    //$dir = VFSHelper::dirname($filePath);
-    list($mountedFs, $relativePath) = $this->findReference($filePath);
-    $fileSystem = $mountedFs->getFileSystem();
-    return  $fileSystem->read($relativePath);
+    list($mountedFs, $relativePath) = $this->findReference(
+      VFSHelper::normalizePath($filePath)
+    );
+    return $mountedFs->getFileSystem()->read($relativePath);
+  }
 
+  public function update($filePath, $content)
+  {
+    list($mountedFs, $relativePath) = $this->findReference(
+      VFSHelper::normalizePath($filePath)
+    );
+    return $mountedFs->getFileSystem()->update($relativePath,$content);
   }
 }

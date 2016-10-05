@@ -21,8 +21,5 @@ return [
       'gitignore , txt' => ['mode' => 'default']
     ],
     'imageExtension' => ['jpg','jpeg','png','gif'],
-    'videoExtension' => ['mp4','mov','wmv'],
-
-
-
+    'videoExtension' => ['mp4','mov','wmv']
 ];

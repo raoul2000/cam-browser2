@@ -1,6 +1,28 @@
   var cm=null;
+  var selected = {
+    'filepath' : null
+  };
   $(function() {
+      $pageVar = $('#pageVar');
 
+      var updateFile = function(filepath, content) {
+        var url = $pageVar.data('update-file-url');
+        $.post(
+          url,
+          {
+            'filepath' : filepath,
+            'content'  : content
+          },
+          function(data){
+            console.log(data);
+          }
+        );
+        return false;
+      };
+
+      /**
+       * User clicks on filename
+       */
       $('.view-file-content').on('click', function(ev) {
         ev.stopPropagation();
         ev.preventDefault();
@@ -29,9 +51,8 @@
           $('.breadcrumb').append('<li id="selected-file"/>');
         }
         $('#selected-file').html(basename);
-
         // show content
-
+        selected.filePath = null;
         if( /image\/..*/.exec(fileMimeType) ) {
           var imgSrc = "index.php?"+ $.param({
             'r' : "explorer/view-file-content",
@@ -41,6 +62,7 @@
         }
         else if (cmOptions )
         {
+          selected.filepath = filePath;
           $.get( "index.php", {
             'r'    : "explorer/view-file-content",
             "path" : filePath
@@ -60,7 +82,7 @@
               }
             });
             CodeMirror.commands.save = function(editor){
-              console.log(editor.getValue());
+              updateFile(selected.filepath, editor.getValue());
               return false;
             };
           });

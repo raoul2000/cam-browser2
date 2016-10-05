@@ -7,19 +7,24 @@ use yii\web\View;
 /* @var $this yii\web\View */
 $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
   'position' => View::POS_END,
-  'depends' => [\yii\web\JqueryAsset::className()]
+  'depends'  => [\yii\web\JqueryAsset::className()]
 ]);
+$updateFileUrl = Url::to(['explorer/update']);
 ?>
-<div class="row hidden"  >
+
+<div class="row"  >
   <div class="col-md-12">
     <?php
-     $url = Url::to(['explorer/vfs','path' => $path ]);
+     $url = Url::to(['explorer/update']);
       echo Html::a(
         'test ajax call',
         ['#'],
         ['onclick'=> "
       console.log('bing = $url');
-      $.get('$url',function(data){
+      $.post('$url',{
+        'filepath' : '/dummy.xml',
+        'content' : 'this is the content ddd'
+      }, function(data){
         console.log(data);
       });
       return false;
@@ -29,6 +34,14 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
   </div>
 </div>
 
+<?php
+echo Html::tag('div','',[
+  'id' => 'pageVar',
+  'data' => [
+    "update-file-url" => $updateFileUrl
+  ]
+])
+ ?>
 
 <div class="row">
     <div class="col-md-12">
@@ -128,8 +141,6 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
                 }
               }
             }
-
-            $nameCol = $item['basename'];
             $nameCol =  \yii\helpers\Html::a(
               $item['basename'],
               ['#' ],

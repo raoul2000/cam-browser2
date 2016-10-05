@@ -15,6 +15,9 @@ class ExplorerController extends \yii\web\Controller
       return [
         'rm' => [
           'class' => 'app\actions\RmAction'
+        ],
+        'update' => [
+          'class' => 'app\actions\UpdateFileAction'
         ]
       ];
     }
