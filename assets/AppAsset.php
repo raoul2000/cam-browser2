@@ -28,6 +28,8 @@ class AppAsset extends AssetBundle
       'node_modules/codemirror/mode/javascript/javascript.js',
       'node_modules/codemirror/mode/markdown/markdown.js',
       'node_modules/codemirror/mode/php/php.js',
+      'node_modules/codemirror/mode/css/css.js',
+      'node_modules/codemirror/mode/xml/xml.js',
       'node_modules/codemirror/addon/display/fullscreen.js',
     ];
     public $depends = [

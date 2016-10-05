@@ -14,8 +14,15 @@ return [
     'timezone' => "Europe/Paris",
     'editor' => [
       'md' => ['mode' => 'markdown'],
-      'js' => [ 'mode' => 'javascript' ],
+      'js, json' => [ 'mode' => 'javascript' ],
       'php' => ['mode' => 'php'],
-      'txt, css' => ['mode' => 'default']
-    ]
+      'css' => ['mode' => 'css'],
+      'xml' => ['mode' => 'xml'],
+      'gitignore , txt' => ['mode' => 'default']
+    ],
+    'imageExtension' => ['jpg','jpeg','png','gif'],
+    'videoExtension' => ['mp4','mov','wmv'],
+
+
+
 ];

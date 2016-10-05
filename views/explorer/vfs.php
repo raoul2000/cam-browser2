@@ -91,43 +91,51 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
         }
         foreach ($content as $item) {
           //var_dump($item);
-          //continue;
+          $data = [
+            'path'      => $item['vfspath']
+          ];
+          if( isset($item['mimetype'])) {
+            $data['mimetype'] = $item['mimetype'];
+          }
           if( $item['type'] === 'file') {
             $icon = '<span class="glyphicon glyphicon-file" aria-hidden="true"></span>';
-            if( array_key_exists('extension',$item)) {
+            if( isset($item['extension'])) {
+              // add extension to the data object
+              $data['extension'] = $item['extension'];
 
-              $ext = strtolower($item['extension']);
-              if( in_array( $ext,['jpg','jpeg','png','gif'])) {
+              // base on thee file extension, define the way it is displayed.
+              // First let's check if it is an image or a video
+              if( in_array( $item['extension'] ,Yii::$app->params['imageExtension'])) {
                 $icon = '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>';
               }
-              elseif( in_array( $ext ,['mp4','mov','wmv'])) {
+              elseif( in_array( $item['extension'] ,Yii::$app->params['videoExtension'])) {
                 $icon = '<span class="glyphicon glyphicon-film" aria-hidden="true"></span>';
               }
-            } else {
-              $item['extension'] = '';
-            }
-            $item['cm-options'] = [];
-            if( isset(Yii::$app->params['editor']) && is_array(Yii::$app->params['editor'])) {
-              $editor = Yii::$app->params['editor'];
-              $ext = $item['extension'];
-              if( array_key_exists($ext,$editor)) {
-                $item['cm-options'] = $editor[$ext];
+              elseif( isset(Yii::$app->params['editor'])) {
+
+                // check if it is an editable text content.
+                // An editable content is configured based on the file extension
+                foreach (Yii::$app->params['editor'] as $ext => $cmOption) {
+                  // $ext can be a comma separated list of extensions
+                  $extList = array_map(function($it){
+                    return trim($it);
+                  }, explode(',',$ext));
+
+                  if( in_array($item['extension'],$extList)) {
+                    $data['cm-options'] = $cmOption;
+                    break;
+                  }
+                }
               }
-            } else {
-              // no edior config
             }
 
             $nameCol = $item['basename'];
             $nameCol =  \yii\helpers\Html::a(
               $item['basename'],
               ['#' ],
-              [ 'class' => 'view-file-content' ,
-                'data' => [
-                  'path'      => $item['vfspath'],
-                  'mimetype'  => $item['mimetype'],
-                  'extension' => $item['extension'],
-                  'cm-options'=> $item['cm-options']
-                ]
+              [
+                'class' => 'view-file-content' ,
+                'data' => $data
               ]
             );
 

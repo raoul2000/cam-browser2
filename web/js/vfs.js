@@ -19,11 +19,9 @@
         var fileMimeType = $this.data('mimetype');
         var fileExtension = $this.data('extension');
         var cmOptions = $this.data('cm-options');
-        console.log(cmOptions);
-        var mimeHigh = fileMimeType.split('/')[0];
-
         var basename = filePath.split(/[\\/]/).pop();
-        console.log("path = "+filePath+" MIME = "+fileMimeType+ " mimeHigh = "+mimeHigh);
+
+        console.log(cmOptions);
         console.log("basename = "+basename);
 
         // update breadcrumb
@@ -34,15 +32,14 @@
 
         // show content
 
-        if( mimeHigh === 'image') {
+        if( /image\/..*/.exec(fileMimeType) ) {
           var imgSrc = "index.php?"+ $.param({
             'r' : "explorer/view-file-content",
             "path" : filePath
           });
           $('#file-content').html('<img src="'+imgSrc+'" class="img-responsive"/>');
         }
-        else if (mimeHigh === 'text' || fileMimeType == "application/xml" ||
-                ['php', 'js','md'].indexOf(fileExtension) != -1 )
+        else if (cmOptions )
         {
           $.get( "index.php", {
             'r'    : "explorer/view-file-content",

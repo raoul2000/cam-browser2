@@ -136,12 +136,17 @@ class VFS extends Object
     $fileSystem = $mountedFs->getFileSystem();
     $result = $fileSystem->listContents($relativePath);
 
-    // add the VFS absolute path for each item and thie MIME type
-    // for file items
+    // Normalize content item set :
+    // - add the VFS absolute path
+    // - convert extension to lower case
+    //
     foreach ($result as &$item) {
       $item['vfspath'] = ($folderPath === '/' ? '' : $folderPath) . '/' . $item['basename'];
       if( $item['type'] === 'file') {
         $item['mimetype'] =  FileHelper::getMimeTypeByExtension($item['basename']);
+      }
+      if( isset($item['extension'])) {
+        $item['extension'] = strtolower($item['extension']);
       }
     }
 
