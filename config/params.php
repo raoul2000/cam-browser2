@@ -18,7 +18,7 @@ return [
       'php' => ['mode' => 'php'],
       'css' => ['mode' => 'css'],
       'xml' => ['mode' => 'xml'],
-      'gitignore , txt' => ['mode' => 'default']
+      'gitignore , txt' => ['mode' => 'default', 'readOnly' => true]
     ],
     'imageExtension' => ['jpg','jpeg','png','gif'],
     'videoExtension' => ['mp4','mov','wmv']

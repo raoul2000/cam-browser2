@@ -55,7 +55,6 @@
         var basename = filePath.split(/[\\/]/).pop();
 
         console.log(cmOptions);
-        console.log("basename = "+basename);
 
         // update breadcrumb
         if( document.getElementById('selected-file') === null) {
@@ -78,10 +77,8 @@
             'r'    : "explorer/view-file-content",
             "path" : filePath
           } , function( data ) {
-
-            cm = CodeMirror( document.getElementById('file-content'), {
+            var options = {
               value: data,
-              mode:  cmOptions ? cmOptions.mode : "javascript",
               lineNumbers : true,
               extraKeys: {
                 "F11": function(cm) {
@@ -91,7 +88,9 @@
                   if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
                 }
               }
-            });
+            };
+            $.extend(options, cmOptions);
+            cm = CodeMirror( document.getElementById('file-content'), options);
             CodeMirror.commands.save = function(editor){
               updateFile(urlUpdateFile, selected.filepath, editor.getValue());
               return false;
