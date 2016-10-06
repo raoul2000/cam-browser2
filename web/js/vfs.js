@@ -4,19 +4,30 @@
   };
   $(function() {
       $pageVar = $('#pageVar');
+      var urlUpdateFile = $pageVar.data('update-file-url');
 
-      var updateFile = function(filepath, content) {
-        var url = $pageVar.data('update-file-url');
-        $.post(
-          url,
-          {
-            'filepath' : filepath,
-            'content'  : content
-          },
-          function(data){
-            console.log(data);
-          }
-        );
+      /**
+       * Invoek ajax url to update existing file content
+       * @param  {string} url URL to call (POST)
+       * @param  {string} filepath absolute path of the file to update
+       * @param  {string} content  new file content to write
+       * @return {boolean}          FALSE
+       */
+      var updateFile = function(url, filepath, content) {
+        if( url ) {
+          $.post(
+            url,
+            {
+              'filepath' : filepath,
+              'content'  : content
+            },
+            function(data){
+              console.log(data);
+            }
+          );
+        } else {
+          console.error("no url available for updating file");
+        }
         return false;
       };
 
@@ -82,7 +93,7 @@
               }
             });
             CodeMirror.commands.save = function(editor){
-              updateFile(selected.filepath, editor.getValue());
+              updateFile(urlUpdateFile, selected.filepath, editor.getValue());
               return false;
             };
           });
