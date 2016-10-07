@@ -2,7 +2,9 @@ html,
 body {
     height: 100%;
 }
-
+.affix-top {
+  position:absolute;
+}
 .wrap {
     min-height: 100%;
     height: auto;

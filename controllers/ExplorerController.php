@@ -22,54 +22,6 @@ class ExplorerController extends \yii\web\Controller
       ];
     }
 
-    public function init()
-    {
-      $this->vfs = Yii::$app->VFS;
-        /*
-      $this->vfs = Yii::createObject([
-        'class' => 'app\components\VFS',
-        'root' => [
-          'type' => 'local',
-          'options'  => [
-            'rootPath' => '@runtime'
-          ]
-        ],
-        'mount' => [
-          [
-            'name' => 'SAMPLE',
-            'type' => 'local',
-            'mount-point' => '/sample-data/WEB/assets',
-            'options' => [
-              'rootPath' => '@webroot'
-            ]
-          ],
-          [
-            'name' => 'WEB',
-            'type' => 'local',
-            'mount-point' => '/sample-data',
-            'options' => [
-              'rootPath' => '@webroot'
-            ]
-          ],
-          [
-            'name' => 'FTP',
-            'type' => 'ftp',
-            'mount-point' => '/sample-data',
-            'options' => [
-              'host' => '127.0.0.1',
-              'username' => 'username',
-              'password' => 'password',
-
-              'port' => 7002,
-              'passive' => true,
-              'timeout' => 30,
-            ]
-          ]
-        ]
-      ]);
-*/
-
-    }
     public function actionIndex()
     {
       require_once('../components/browse-folder.php');
@@ -119,7 +71,7 @@ class ExplorerController extends \yii\web\Controller
     {
       $path = VFSHelper::normalizePath($path);
 
-      $content = $this->vfs->ls($path);
+      $content = Yii::$app->VFS->ls($path);
       $params = [
         'content' => $content,
         'path'    => $path,
@@ -137,11 +89,8 @@ class ExplorerController extends \yii\web\Controller
     public function actionViewFileContent($path='/')
     {
       $path = VFSHelper::normalizePath($path);
-      ////$mimeType = FileHelper::getMimeTypeByExtension($path);
-      //\Yii::$app->response->format = FileHelper::getMimeTypeByExtension($path);
-
       \Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-      return $this->vfs->read($path);
+      return Yii::$app->VFS->read($path);
     }
 
     public function actionDeleteFile($path)

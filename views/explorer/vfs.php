@@ -12,7 +12,7 @@ $this->registerJsFile(Yii::getAlias('@web/js/vfs.js'),[
 $updateFileUrl = Url::to(['explorer/update']);
 ?>
 
-<div class="row"  >
+<div class="row hidden"  >
   <div class="col-md-12">
     <?php
      $url = Url::to(['explorer/update']);
@@ -88,6 +88,9 @@ echo Html::tag('div','',[
 
 <div class="row">
   <div class="col-md-2">
+    <div data-spy="___affix" data-offset-top="120">
+
+
     <table class="table table-hover table-condensed">
       <?php
         if( $parent != $path) {
@@ -168,12 +171,29 @@ echo Html::tag('div','',[
         //var_dump($content)
       ?>
     </table>
+    </div>
   </div> <!-- end of nav panel -->
 
   <div class="col-md-10">
-    <div id="file-content-container" class="">
-      <div id="file-content" class="">
+    <div class="row hidden" style="margin-bottom:10px;">
+      <div class="col-md-10">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+          <div class="btn-group btn-group-xs" role="group" aria-label="...">
+            <button type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-10">
+        <div id="file-content-container" class="">
+          <div id="file-content" class="">
+
+          </div>
+        </div>
       </div>
     </div>
   </div><!-- end of main content -->
